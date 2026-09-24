@@ -571,8 +571,7 @@ components:
     Voucher:
       type: object
       # VERIFIED: reference is always present (empty string when not supplied).
-      required:
-        [voucherToken, redeemLink, product, amount, expiresAt, balanceAfter, reference, mode]
+      required: [voucherToken, redeemLink, product, amount, expiresAt, balanceAfter, reference, mode]
       properties:
         voucherToken:
           type: string
