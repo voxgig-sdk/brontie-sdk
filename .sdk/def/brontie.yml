@@ -15,8 +15,8 @@ info:
   version: 1.0.0
   summary: Issue coffee vouchers against a pre-funded balance.
   description: |
-    Partners call this API to issue a Brontie voucher. We return a redemption
-    link. The partner surfaces that link inside their own product. Brontie does
+    Partners call this API to issue a Brontie voucher. Brontie returns a
+    redemption link. The partner surfaces that link inside their own product. Brontie does
     not contact the recipient: no email, no SMS.
 
     The recipient chooses a partner cafe themselves after receiving the link,
@@ -209,7 +209,7 @@ paths:
             five minutes, meaning an earlier attempt died mid-issue. In live
             mode this is not resolved automatically, because money may already
             have moved and only a human can reconcile it safely. Brontie is
-            alerted when this happens; contact us rather than retrying in a
+            alerted when this happens; contact Brontie rather than retrying in a
             loop, and do not reuse the key. In test mode a stuck claim
             self-heals after five minutes and the retry succeeds, so
             `issue_stuck` is not reproducible with a test key.
