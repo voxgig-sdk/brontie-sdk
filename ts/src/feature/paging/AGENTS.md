@@ -1,6 +1,6 @@
 # PagingFeature — Agent Guide
 
-Pagination signals for list operations (v0.0.1).
+Paging (v0.0.1).
 
 A **feature** is a pipeline extension: an object of hooks that fire at named
 stages of every entity operation (load, list, create, update, remove) and of

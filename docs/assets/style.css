@@ -1,6 +1,6 @@
 /* Customise this template or the shared colours and fonts in main.kit.doc.style. */
-:root{--primary:#e70042;--accent:#00c6d8;--background:#f5f5f9;--text:#0a0a0a;color-scheme:light}
-
+:root{--primary:#6ca3a4;--accent:#f4c24d;--background:#fef6eb;--text:#282828;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--background:#14201f;--text:#f0e7d8;color-scheme:dark;}}
 @font-face{font-family:Nunito;src:url("./nunito.woff2");font-weight:100 900;font-display:swap}
 
 *{box-sizing:border-box}

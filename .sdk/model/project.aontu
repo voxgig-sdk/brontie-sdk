@@ -28,3 +28,20 @@
 # link the site. Without this the README advertises no address, which is what
 # an unpublished repository should do.
 main: kit: doc: edition: 'github-pages': published: true
+
+# Brand palette, taken from brontie.ie's own stylesheet and ranked by use
+# there: #6ca3a4 sage (66 occurrences), #f4c24d gold (42), #fef6eb cream (11),
+# #282828 body text (20). Dark mode deepens the sage rather than going neutral,
+# so the identity survives the theme switch.
+# auto, so the dark values above are actually used: light and dark emit one
+# palette each, and only auto honours the reader's own setting.
+main: kit: doc: style: mode: 'auto'
+
+main: kit: doc: style: color: {
+  primary: '#6ca3a4'
+  accent: '#f4c24d'
+  background: '#fef6eb'
+  text: '#282828'
+  darkBackground: '#14201f'
+  darkText: '#f0e7d8'
+}
