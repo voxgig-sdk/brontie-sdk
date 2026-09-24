@@ -68,6 +68,7 @@
               "path": "docs"
             },
             "package": "@voxgig/docgen",
+            "published": true,
             "site": {
               "active": true
             },
@@ -90,6 +91,7 @@
               "path": "SUMMARY.md"
             },
             "package": "@voxgig/docgen",
+            "published": false,
             "site": {
               "active": true
             },

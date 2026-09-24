@@ -23,3 +23,8 @@
 # A published package name that does not follow the derivation:
 #
 #   main: kit: target: ts: publish: registry: package: '@scope/name'
+
+# GitHub Pages is enabled for this repository, so generated documentation may
+# link the site. Without this the README advertises no address, which is what
+# an unpublished repository should do.
+main: kit: doc: edition: 'github-pages': published: true
