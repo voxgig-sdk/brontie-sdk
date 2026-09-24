@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "target": "rb",
+  "scenarios": "unsupported",
+  "points": [
+    "GET /api/v1/balance",
+    "POST /api/v1/vouchers"
+  ],
+  "reason": "This target does not yet execute declarative live recipes. Its existing tests do not establish full operation coverage."
+}

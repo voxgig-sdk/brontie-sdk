@@ -1,0 +1,52 @@
+{
+  "existing": {
+    "voucher": {
+      "VOUCHER00": {
+        "idempotencyKey": "s3c",
+        "message": "s3d",
+        "product": "s3e",
+        "recipient": {},
+        "reference": "s40",
+        "senderName": "s41",
+        "id": "VOUCHER00"
+      },
+      "VOUCHER01": {
+        "idempotencyKey": "s78",
+        "message": "s79",
+        "product": "s7a",
+        "recipient": {},
+        "reference": "s7c",
+        "senderName": "s7d",
+        "id": "VOUCHER01"
+      },
+      "VOUCHER02": {
+        "idempotencyKey": "sb4",
+        "message": "sb5",
+        "product": "sb6",
+        "recipient": {},
+        "reference": "sb8",
+        "senderName": "sb9",
+        "id": "VOUCHER02"
+      }
+    }
+  },
+  "new": {
+    "voucher": {
+      "voucher_ref01": {
+        "idempotencyKey": "sf0",
+        "message": "sf1",
+        "product": "sf2",
+        "recipient": {},
+        "reference": "sf4",
+        "senderName": "sf5"
+      }
+    }
+  },
+  "requests": {
+    "POST /api/v1/vouchers": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

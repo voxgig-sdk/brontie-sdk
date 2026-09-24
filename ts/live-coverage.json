@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "target": "ts",
+  "scenarios": "supported",
+  "points": [
+    "GET /api/v1/balance",
+    "POST /api/v1/vouchers"
+  ]
+}

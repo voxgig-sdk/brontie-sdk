@@ -1,0 +1,44 @@
+{
+  "existing": {
+    "balance": {
+      "BALANCE00": {
+        "alertAt": "s28",
+        "alertPercent": 41,
+        "balance": 42,
+        "currency": "s2b",
+        "id": "BALANCE00"
+      },
+      "BALANCE01": {
+        "alertAt": "s50",
+        "alertPercent": 81,
+        "balance": 82,
+        "currency": "s53",
+        "id": "BALANCE01"
+      },
+      "BALANCE02": {
+        "alertAt": "s78",
+        "alertPercent": 121,
+        "balance": 122,
+        "currency": "s7b",
+        "id": "BALANCE02"
+      }
+    }
+  },
+  "new": {
+    "balance": {
+      "balance_ref01": {
+        "alertAt": "sa0",
+        "alertPercent": 161,
+        "balance": 162,
+        "currency": "sa3"
+      }
+    }
+  },
+  "requests": {
+    "GET /api/v1/balance": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}
