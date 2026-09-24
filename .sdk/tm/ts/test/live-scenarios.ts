@@ -41,16 +41,11 @@ export async function runLiveScenarios(SDK: any, plan: any[], envPrefix: string,
       excluded: control.skip ? control.reason || 'Excluded by test control' : hint.excluded,
       run: async (ctx: any) => {
         transport.enter(ctx)
-        // AN OPERATION WITH NO LIVE RECIPE IS NOT CONSENT TO RUN IT.
-        // The plan carries EVERY operation point, not only the hinted
-        // ones -- the hint decides whether live.test is generated at all.
-        // So hinting one read used to switch the whole API on, and every
-        // other operation, writes included, was then attempted with
-        // synthesized input. A POST reached a live payments-adjacent API
-        // that way, on a service with no delete and no refund path.
-        // Blocked, not excluded: blocked fails assertLiveReport, so the
-        // author is told to make a decision rather than silently losing
-        // the coverage. Nothing is sent either way.
+        // Every operation point is planned, not only the hinted ones; a hint
+        // only decides whether this file is generated. Absent a recipe there
+        // is no consent to call the operation, so block rather than
+        // synthesize input for it. Blocked fails assertLiveReport, so an
+        // omission surfaces instead of passing quietly.
         if (!point.facts.live) throw new LiveBlocked('No live recipe: add a live hint for this operation in the guide, or give it an explicit excluded reason')
         if (point.contractVersion && point.contractVersion !== 1) throw new LiveBlocked('Unsupported operation contract version')
         if (point.op === 'remove' || hint.cleanup) {

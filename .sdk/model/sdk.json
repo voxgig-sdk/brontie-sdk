@@ -1,6 +1,15 @@
 {
+  "NAME": "BRONTIE",
+  "Name": "Brontie",
   "def": "brontie.yml",
   "main": {
+    "api": {
+      "entity": {},
+      "guide": {}
+    },
+    "custom": {
+      "plurals": {}
+    },
     "def": {
       "desc": ""
     },
@@ -1871,5 +1880,8 @@
     }
   },
   "name": "brontie",
+  "name-": "brontie",
+  "name_": "brontie",
+  "name__orig": "brontie",
   "origin": "voxgig-sdk"
 }
