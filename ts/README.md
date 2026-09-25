@@ -28,7 +28,7 @@ loading a specific record.
 ### 1. Create a client
 
 ```ts
-import { BrontieSDK } from '@voxgig-sdk/brontie'
+import { BrontieSDK } from '@voxgig-sdk/brontie-sdk'
 
 const client = new BrontieSDK({
   apikey: process.env.BRONTIE_APIKEY,
@@ -586,7 +586,7 @@ brontie/
 Import the SDK from the package root:
 
 ```ts
-import { BrontieSDK } from '@voxgig-sdk/brontie'
+import { BrontieSDK } from '@voxgig-sdk/brontie-sdk'
 ```
 
 ### Entity state

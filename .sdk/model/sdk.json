@@ -1557,7 +1557,7 @@
             "registry": {
               "active": false,
               "name": "luarocks",
-              "package": "",
+              "package": "voxgig-sdk-brontie-sdk",
               "state": "pending",
               "url": "https://luarocks.org",
               "vault": {
@@ -1623,7 +1623,7 @@
             "registry": {
               "active": false,
               "name": "packagist",
-              "package": "",
+              "package": "voxgig-sdk/brontie-sdk",
               "state": "pending",
               "url": "https://packagist.org",
               "vault": {
@@ -1695,7 +1695,7 @@
             "registry": {
               "active": false,
               "name": "pypi",
-              "package": "",
+              "package": "voxgig-sdk-brontie-sdk",
               "state": "pending",
               "url": "https://pypi.org",
               "vault": {
@@ -1772,7 +1772,7 @@
             "registry": {
               "active": false,
               "name": "rubygems",
-              "package": "",
+              "package": "voxgig-sdk-brontie-sdk",
               "state": "pending",
               "url": "https://rubygems.org",
               "vault": {
@@ -1849,7 +1849,7 @@
             "registry": {
               "active": false,
               "name": "npm",
-              "package": "",
+              "package": "@voxgig-sdk/brontie-sdk",
               "state": "pending",
               "url": "https://registry.npmjs.org",
               "vault": {
