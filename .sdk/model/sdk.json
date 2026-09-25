@@ -1762,12 +1762,7 @@
             "json": {
               "active": true,
               "kind": "prod",
-              "version": "0"
-            },
-            "voxgig-struct": {
-              "active": true,
-              "kind": "prod",
-              "version": "0.0.10"
+              "version": "*"
             }
           },
           "ext": "rb",
@@ -1896,7 +1891,7 @@
               },
               "via": "port"
             },
-            "version": "0.0.1"
+            "version": "0.0.2"
           },
           "superseded": [
             "test/runner.ts",
