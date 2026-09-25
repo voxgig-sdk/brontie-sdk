@@ -56,7 +56,7 @@ main: kit: target: php: publish: registry: package: 'voxgig-sdk/brontie-sdk'
 
 # The npm release. 0.0.1 was published by hand, as a new package's first
 # version must be; later versions are released by the publish-ts workflow.
-main: kit: target: ts: publish: version: '0.0.2'
+main: kit: target: ts: publish: version: '0.0.3'
 
 # A voucher is identified by the voucherToken its create response carries.
 # apidef takes the voucher's fields from the create request, which has none,

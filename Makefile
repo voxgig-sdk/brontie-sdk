@@ -203,7 +203,7 @@ deploy-dry-ts:
 	boru vault exec --dry-run --for=github=$(GITHUB_ALIAS) -- $(MAKE) tag-push-ts
 
 tag-push-ts:
-	@set -e; tag="ts/v0.0.2"; \
+	@set -e; tag="ts/v0.0.3"; \
 	token="$${GITHUB_TOKEN:-$$GH_TOKEN}"; \
 	if [ "$$token" = "$(BORU_DRY_RUN_FILLER)" ]; then \
 	  echo "[dry-run] boru filler token detected: would create (if missing) and push tag $$tag; nothing pushed."; exit 0; fi; \
