@@ -39,6 +39,7 @@ class VoucherEntityTest < Minitest::Test
     voucher_ref01_data_result = voucher_ref01_ent.create(voucher_ref01_data, nil)
     voucher_ref01_data = Helpers.to_map(voucher_ref01_data_result.respond_to?(:data_get) ? voucher_ref01_data_result.data_get : voucher_ref01_data_result)
     assert !voucher_ref01_data.nil?
+    assert !voucher_ref01_data["id"].nil?
 
   end
 end

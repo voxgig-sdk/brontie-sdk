@@ -43,6 +43,7 @@ describe("VoucherEntity", function()
     assert.is_nil(err)
     voucher_ref01_data = helpers.to_map(type(voucher_ref01_data_result) == 'table' and voucher_ref01_data_result.data_get and voucher_ref01_data_result:data_get() or voucher_ref01_data_result)
     assert.is_not_nil(voucher_ref01_data)
+    assert.is_not_nil(voucher_ref01_data["id"])
 
   end)
 end)

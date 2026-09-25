@@ -158,6 +158,7 @@ $voucher = $client->Voucher();
 | `recipient` | `array` | No |  |
 | `reference` | `string` | No | Your identifier. |
 | `senderName` | `string` | No | Who the gift appears to be from, per call, so it can vary by course or cohort. |
+| `voucherToken` | `string` | No | Opaque voucher identifier. |
 
 ### Operations
 

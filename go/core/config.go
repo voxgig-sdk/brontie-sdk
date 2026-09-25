@@ -286,6 +286,17 @@ func MakeConfig() map[string]any {
 						"type": "`$STRING`",
 						"short": "Who the gift appears to be from, per call, so it can vary by course or cohort.",
 					},
+					map[string]any{
+						"name": "voucherToken",
+						"title": "Voucher Token",
+						"type": "`$STRING`",
+						"short": "Opaque voucher identifier.",
+						"readOnly": true,
+					},
+				},
+				"id": map[string]any{
+					"field": "voucherToken",
+					"name": "voucherToken",
 				},
 				"name": "voucher",
 				"op": map[string]any{

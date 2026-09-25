@@ -36,6 +36,7 @@ type VoucherCreateData struct {
 	Recipient *map[string]any `json:"recipient,omitempty"`
 	Reference *string `json:"reference,omitempty"`
 	SenderName *string `json:"senderName,omitempty"`
+	VoucherToken *string `json:"voucherToken,omitempty"`
 }
 
 // asMap turns a typed request/data struct into the map[string]any the

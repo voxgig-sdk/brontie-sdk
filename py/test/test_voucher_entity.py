@@ -46,6 +46,7 @@ class TestVoucherEntity:
 
         voucher_ref01_data = helpers.to_map(runner.entity_data(voucher_ref01_ent.create(voucher_ref01_data, None)))
         assert voucher_ref01_data is not None
+        assert voucher_ref01_data["id"] is not None
 
 
 

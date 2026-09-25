@@ -25,6 +25,7 @@
 ---@field recipient? table
 ---@field reference? string
 ---@field senderName? string
+---@field voucherToken? string
 
 ---@class VoucherCreateData
 ---@field idempotencyKey string
@@ -33,6 +34,7 @@
 ---@field recipient? table
 ---@field reference? string
 ---@field senderName? string
+---@field voucherToken? string
 
 local M = {}
 

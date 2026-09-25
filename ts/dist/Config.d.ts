@@ -194,19 +194,33 @@ declare class Config {
                 type: string;
                 req: boolean;
                 short: string;
+                readOnly?: undefined;
             } | {
                 name: string;
                 title: string;
                 type: string;
                 short: string;
                 req?: undefined;
+                readOnly?: undefined;
             } | {
                 name: string;
                 title: string;
                 type: string;
                 req?: undefined;
                 short?: undefined;
+                readOnly?: undefined;
+            } | {
+                name: string;
+                title: string;
+                type: string;
+                short: string;
+                readOnly: boolean;
+                req?: undefined;
             })[];
+            id: {
+                field: string;
+                name: string;
+            };
             name: string;
             op: {
                 create: {

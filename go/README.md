@@ -284,6 +284,7 @@ API path: `/api/v1/balance`
 | `"recipient"` |  |
 | `"reference"` | Your identifier. |
 | `"senderName"` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
+| `"voucherToken"` | Opaque voucher identifier. |
 
 Operations: Create.
 
@@ -344,6 +345,7 @@ Create an instance: `voucher := client.Voucher(nil)`
 | `recipient` | `map[string]any` |  |
 | `reference` | `string` | Your identifier. |
 | `senderName` | `string` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
+| `voucherToken` | `string` | Opaque voucher identifier. |
 
 #### Example: Create
 

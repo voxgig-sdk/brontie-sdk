@@ -39,6 +39,7 @@ class Voucher
     public ?array $recipient = null;
     public ?string $reference = null;
     public ?string $senderName = null;
+    public ?string $voucherToken = null;
 }
 
 /** Request payload for Voucher#create. */
@@ -50,5 +51,6 @@ class VoucherCreateData
     public ?array $recipient = null;
     public ?string $reference = null;
     public ?string $senderName = null;
+    public ?string $voucherToken = null;
 }
 

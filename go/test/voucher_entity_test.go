@@ -62,6 +62,9 @@ func TestVoucherEntity(t *testing.T) {
 		if voucherRef01Data == nil {
 			t.Fatal("expected create result to be a map")
 		}
+		if voucherRef01Data["id"] == nil {
+			t.Fatal("expected created entity to have an id")
+		}
 
 	})
 }

@@ -282,6 +282,17 @@ local function make_config()
             ["type"] = "`$STRING`",
             ["short"] = "Who the gift appears to be from, per call, so it can vary by course or cohort.",
           },
+          {
+            ["name"] = "voucherToken",
+            ["title"] = "Voucher Token",
+            ["type"] = "`$STRING`",
+            ["short"] = "Opaque voucher identifier.",
+            ["readOnly"] = true,
+          },
+        },
+        ["id"] = {
+          ["field"] = "voucherToken",
+          ["name"] = "voucherToken",
         },
         ["name"] = "voucher",
         ["op"] = {

@@ -69,6 +69,9 @@ BalanceLoadMatch = Struct.new(
 #
 # @!attribute [rw] senderName
 #   @return [String, nil]
+#
+# @!attribute [rw] voucherToken
+#   @return [String, nil]
 Voucher = Struct.new(
   :idempotencyKey,
   :message,
@@ -76,6 +79,7 @@ Voucher = Struct.new(
   :recipient,
   :reference,
   :senderName,
+  :voucherToken,
   keyword_init: true
 )
 
@@ -98,6 +102,9 @@ Voucher = Struct.new(
 #
 # @!attribute [rw] senderName
 #   @return [String, nil]
+#
+# @!attribute [rw] voucherToken
+#   @return [String, nil]
 VoucherCreateData = Struct.new(
   :idempotencyKey,
   :message,
@@ -105,6 +112,7 @@ VoucherCreateData = Struct.new(
   :recipient,
   :reference,
   :senderName,
+  :voucherToken,
   keyword_init: true
 )
 

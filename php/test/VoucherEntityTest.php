@@ -46,6 +46,7 @@ class VoucherEntityTest extends TestCase
         $voucher_ref01_data_result = $voucher_ref01_ent->create($voucher_ref01_data, null);
         $voucher_ref01_data = Helpers::to_map(is_object($voucher_ref01_data_result) && method_exists($voucher_ref01_data_result, 'data_get') ? $voucher_ref01_data_result->data_get() : $voucher_ref01_data_result);
         $this->assertNotNull($voucher_ref01_data);
+        $this->assertNotNull($voucher_ref01_data["id"]);
 
     }
 }

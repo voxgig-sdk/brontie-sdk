@@ -159,6 +159,7 @@ voucher = client.Voucher
 | `recipient` | `Hash` | No |  |
 | `reference` | `String` | No | Your identifier. |
 | `senderName` | `String` | No | Who the gift appears to be from, per call, so it can vary by course or cohort. |
+| `voucherToken` | `String` | No | Opaque voucher identifier. |
 
 ### Operations
 
