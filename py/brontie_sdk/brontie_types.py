@@ -40,6 +40,7 @@ class Voucher(VoucherRequired, total=False):
     recipient: dict
     reference: str
     senderName: str
+    voucherToken: str
 
 
 class VoucherCreateDataRequired(TypedDict):
@@ -52,3 +53,4 @@ class VoucherCreateData(VoucherCreateDataRequired, total=False):
     recipient: dict
     reference: str
     senderName: str
+    voucherToken: str

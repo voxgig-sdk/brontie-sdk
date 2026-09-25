@@ -105,12 +105,12 @@ local result, err = client:Balance():load()
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@voxgig-sdk/brontie` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
-| Python | `voxgig-sdk-brontie` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
-| PHP | `voxgig-sdk/brontie` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
+| TypeScript | `@voxgig-sdk/brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
+| Python | `voxgig-sdk-brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
+| PHP | `voxgig-sdk/brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
 | Golang | `github.com/voxgig-sdk/brontie-sdk/go` | `go get github.com/voxgig-sdk/brontie-sdk/go@latest` |
-| Ruby | `voxgig-sdk-brontie` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
-| Lua | `voxgig-sdk-brontie` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
+| Ruby | `voxgig-sdk-brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
+| Lua | `voxgig-sdk-brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
 | Go CLI | `github.com/voxgig-sdk/brontie-sdk/go-cli` | `go install github.com/voxgig-sdk/brontie-sdk/go-cli/cmd/brontie@latest` |
 | Go MCP server | `github.com/voxgig-sdk/brontie-sdk/go-mcp` | `go get github.com/voxgig-sdk/brontie-sdk/go-mcp@latest` |
 
@@ -119,7 +119,7 @@ local result, err = client:Balance():load()
 ### TypeScript
 
 ```ts
-import { BrontieSDK } from '@voxgig-sdk/brontie'
+import { BrontieSDK } from '@voxgig-sdk/brontie-sdk'
 
 const client = new BrontieSDK({
   apikey: process.env.BRONTIE_APIKEY,

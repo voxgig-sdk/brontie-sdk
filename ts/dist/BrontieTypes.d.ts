@@ -17,6 +17,7 @@ export interface Voucher {
     recipient?: Record<string, any>;
     reference?: string;
     senderName?: string;
+    voucherToken?: string;
 }
 export interface VoucherCreateData {
     idempotencyKey: string;
@@ -25,4 +26,5 @@ export interface VoucherCreateData {
     recipient?: Record<string, any>;
     reference?: string;
     senderName?: string;
+    voucherToken?: string;
 }

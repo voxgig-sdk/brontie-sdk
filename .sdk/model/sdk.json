@@ -270,7 +270,20 @@
               "r": false,
               "sh": "Who the gift appears to be from, per call, so it can vary by course or cohort.",
               "t": "`$STRING`"
+            },
+            "voucherToken": {
+              "a": true,
+              "h": "Voucher Token",
+              "n": "voucherToken",
+              "r": false,
+              "ro": true,
+              "sh": "Opaque voucher identifier.",
+              "t": "`$STRING`"
             }
+          },
+          "id": {
+            "field": "voucherToken",
+            "name": "voucherToken"
           },
           "name": "voucher",
           "op": {
@@ -1283,6 +1296,14 @@
         },
         "utility": {}
       },
+      "phase": {
+        "build": {
+          "active": true
+        },
+        "top": {
+          "active": true
+        }
+      },
       "repo": {
         "host": "github.com",
         "path": ""
@@ -1319,6 +1340,7 @@
             "create": true,
             "path": "",
             "repo": "",
+            "root": false,
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
@@ -1386,6 +1408,7 @@
             "create": true,
             "path": "",
             "repo": "",
+            "root": false,
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
@@ -1463,6 +1486,7 @@
             "create": true,
             "path": "",
             "repo": "",
+            "root": false,
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
@@ -1546,6 +1570,7 @@
             "create": true,
             "path": "",
             "repo": "",
+            "root": false,
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
@@ -1557,7 +1582,7 @@
             "registry": {
               "active": false,
               "name": "luarocks",
-              "package": "",
+              "package": "voxgig-sdk-brontie-sdk",
               "state": "pending",
               "url": "https://luarocks.org",
               "vault": {
@@ -1612,6 +1637,7 @@
             "create": true,
             "path": "",
             "repo": "",
+            "root": false,
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
@@ -1623,7 +1649,7 @@
             "registry": {
               "active": false,
               "name": "packagist",
-              "package": "",
+              "package": "voxgig-sdk/brontie-sdk",
               "state": "pending",
               "url": "https://packagist.org",
               "vault": {
@@ -1684,6 +1710,7 @@
             "create": true,
             "path": "",
             "repo": "",
+            "root": false,
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
@@ -1695,7 +1722,7 @@
             "registry": {
               "active": false,
               "name": "pypi",
-              "package": "",
+              "package": "voxgig-sdk-brontie-sdk",
               "state": "pending",
               "url": "https://pypi.org",
               "vault": {
@@ -1761,6 +1788,7 @@
             "create": true,
             "path": "",
             "repo": "",
+            "root": false,
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
@@ -1772,7 +1800,7 @@
             "registry": {
               "active": false,
               "name": "rubygems",
-              "package": "",
+              "package": "voxgig-sdk-brontie-sdk",
               "state": "pending",
               "url": "https://rubygems.org",
               "vault": {
@@ -1838,6 +1866,7 @@
             "create": true,
             "path": "",
             "repo": "",
+            "root": false,
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
@@ -1849,7 +1878,7 @@
             "registry": {
               "active": false,
               "name": "npm",
-              "package": "",
+              "package": "@voxgig-sdk/brontie-sdk",
               "state": "pending",
               "url": "https://registry.npmjs.org",
               "vault": {

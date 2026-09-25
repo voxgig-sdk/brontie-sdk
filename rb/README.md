@@ -260,6 +260,7 @@ API path: `/api/v1/balance`
 | `recipient` |  |
 | `reference` | Your identifier. |
 | `senderName` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
+| `voucherToken` | Opaque voucher identifier. |
 
 Operations: Create.
 
@@ -317,6 +318,7 @@ Create an instance: `voucher = client.Voucher`
 | `recipient` | `Hash` |  |
 | `reference` | `String` | Your identifier. |
 | `senderName` | `String` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
+| `voucherToken` | `String` | Opaque voucher identifier. |
 
 #### Example: Create
 

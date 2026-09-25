@@ -8,7 +8,7 @@ it, and how this repo releases is none of their business.
 
 | target | package | workflow |
 |---|---|---|
-| `ts/` | @voxgig-sdk/brontie | `.github/workflows/publish-ts.yml` |
+| `ts/` | @voxgig-sdk/brontie-sdk | `.github/workflows/publish-ts.yml` |
 
 ## How a release happens
 
@@ -63,13 +63,13 @@ npm has to be told which repository and which workflow file may publish this
 package. From a machine logged in to npm with publish rights (2FA is
 required):
 
-    npm trust github @voxgig-sdk/brontie \
+    npm trust github @voxgig-sdk/brontie-sdk \
       --repository voxgig-sdk/brontie-sdk \
       --file publish-ts.yml \
       --allow-publish
 
-Then `npm trust list @voxgig-sdk/brontie` shows it, and
-`npm trust revoke @voxgig-sdk/brontie --id=<id>` removes it.
+Then `npm trust list @voxgig-sdk/brontie-sdk` shows it, and
+`npm trust revoke @voxgig-sdk/brontie-sdk --id=<id>` removes it.
 
 **The workflow filename is part of the configuration.** Renaming
 `publish-ts.yml` breaks publishing until the npm side is

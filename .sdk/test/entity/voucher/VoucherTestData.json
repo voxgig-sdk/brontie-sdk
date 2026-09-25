@@ -2,30 +2,33 @@
   "existing": {
     "voucher": {
       "VOUCHER00": {
-        "idempotencyKey": "s3c",
-        "message": "s3d",
-        "product": "s3e",
+        "idempotencyKey": "s46",
+        "message": "s47",
+        "product": "s48",
         "recipient": {},
-        "reference": "s40",
-        "senderName": "s41",
+        "reference": "s4a",
+        "senderName": "s4b",
+        "voucherToken": "s4c",
         "id": "VOUCHER00"
       },
       "VOUCHER01": {
-        "idempotencyKey": "s78",
-        "message": "s79",
-        "product": "s7a",
+        "idempotencyKey": "s8c",
+        "message": "s8d",
+        "product": "s8e",
         "recipient": {},
-        "reference": "s7c",
-        "senderName": "s7d",
+        "reference": "s90",
+        "senderName": "s91",
+        "voucherToken": "s92",
         "id": "VOUCHER01"
       },
       "VOUCHER02": {
-        "idempotencyKey": "sb4",
-        "message": "sb5",
-        "product": "sb6",
+        "idempotencyKey": "sd2",
+        "message": "sd3",
+        "product": "sd4",
         "recipient": {},
-        "reference": "sb8",
-        "senderName": "sb9",
+        "reference": "sd6",
+        "senderName": "sd7",
+        "voucherToken": "sd8",
         "id": "VOUCHER02"
       }
     }
@@ -33,12 +36,13 @@
   "new": {
     "voucher": {
       "voucher_ref01": {
-        "idempotencyKey": "sf0",
-        "message": "sf1",
-        "product": "sf2",
+        "idempotencyKey": "s118",
+        "message": "s119",
+        "product": "s11a",
         "recipient": {},
-        "reference": "sf4",
-        "senderName": "sf5"
+        "reference": "s11c",
+        "senderName": "s11d",
+        "voucherToken": "s11e"
       }
     }
   },
