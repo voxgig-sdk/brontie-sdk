@@ -37,7 +37,7 @@ def make_config():
         "main": {
             "name": "Brontie",
             "slug": "brontie",
-            "version": "0.0.1",
+            "version": "0.0.3",
             "target": "py",
         },
         "feature": {

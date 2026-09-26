@@ -34,7 +34,7 @@ class BrontieConfig
             "main" => [
                 "name" => "Brontie",
                 "slug" => "brontie",
-                "version" => "0.0.1",
+                "version" => "0.0.3",
                 "target" => "php",
             ],
             "feature" => [
