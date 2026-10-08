@@ -1,6 +1,24 @@
 # Brontie Partner API
 
-Partners call this API to issue a Brontie voucher. Brontie returns a redemption link. The partner surfaces that link inside their own product. Brontie does not contact the recipient: no email, no SMS. The recipient chooses a partner cafe themselves after receiving the link, not at issue time, so no cafe is associated with a voucher until the recipient picks one. Money comes off a balance topped up in advance. There is no refund path back to the balance, including for vouchers that are never redeemed. Self-service top-up is still being built. Until it ships, balances are credited by arrangement with Brontie. Scope: Republic of Ireland, EUR only. Read the Idempotency section before building. The `idempotencyKey` is required and the retry behaviour around it is the only surprising part of this API.
+> Partners call this API to issue a Brontie voucher. Brontie returns a
+> redemption link. The partner surfaces that link inside their own product. Brontie does
+> not contact the recipient: no email, no SMS.
+>
+> The recipient chooses a partner cafe themselves after receiving the link,
+> not at issue time, so no cafe is associated with a voucher until the
+> recipient picks one.
+>
+> Money comes off a balance topped up in advance. There is no refund path back
+> to the balance, including for vouchers that are never redeemed.
+>
+> Self-service top-up is still being built. Until it ships, balances are
+> credited by arrangement with Brontie.
+>
+> Scope: Republic of Ireland, EUR only.
+>
+> Read the Idempotency section before building. The `idempotencyKey` is
+> required and the retry behaviour around it is the only surprising part of
+> this API.
 
 ## Start here
 
@@ -31,11 +49,11 @@ SDK operations: `create`.
 
 Key fields to recognise:
 
+- `amount`: Amount in EUR debited from the balance.
+- `balanceAfter`: On a 201, the balance after this debit. For test keys nothing is debited, so this is the untouched balance. On a 200 replay, see the note on that response.
+- `expiresAt`: Five years from issue.
 - `idempotencyKey`: Unique per gift on the partner side, scoped per partner and per mode.
 - `message`: Short personal note shown with the gift.
-- `product`: `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. Prices are fixed per product, not negotiated per partner.
-- `reference`: Always present. Your `reference` echoed back unchanged, or an empty string if you did not supply one.
-- `senderName`: Who the gift appears to be from, per call, so it can vary by course or cohort.
 
 ### Route map
 

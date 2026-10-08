@@ -12,9 +12,14 @@ The SDK exposes the API as capitalised, semantic **Entities** — for example `$
 
 ## Install
 This package is not yet published to Packagist. Install it from the
-GitHub release tag (`php/vX.Y.Z`):
+GitHub release tag (`php/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/brontie-sdk/tags)), or
+from a clone as a Composer path repository:
 
-- Releases: [https://github.com/voxgig-sdk/brontie-sdk/releases](https://github.com/voxgig-sdk/brontie-sdk/releases)
+```bash
+git clone https://github.com/voxgig-sdk/brontie-sdk
+composer config repositories.brontie-sdk path ./brontie-sdk/php
+composer require voxgig-sdk/brontie-sdk:@dev
+```
 
 
 ## Tutorial: your first API call
@@ -218,8 +223,8 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `($reqmatch, $ctrl): array` | Load a single entity by match criteria. |
-| `create` | `($reqdata, $ctrl): array` | Create a new entity. |
+| `load` | `($reqmatch, $ctrl): mixed` | Load a single entity by match criteria, and return it. |
+| `create` | `($reqdata, $ctrl): mixed` | Create a new entity, and return it. |
 | `data_get` | `(): array` | Get entity data. |
 | `data_set` | `($data): void` | Set entity data. |
 | `match_get` | `(): array` | Get entity match criteria. |
@@ -229,9 +234,9 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the ENTITY (call data_get() for the record) (an `array` for single-entity
-ops, a `list` for `list`) and throw on error. Wrap calls in
-`try`/`catch` to handle failures.
+Entity operations return the entity, and `list` an `array` of entities, one
+per record; an entity's `data_get()` reads its record (an `array`). They
+throw on error, so wrap calls in `try`/`catch` to handle failures.
 
 The `direct()` escape hatch never throws — it returns a result `array`
 you branch on via `$result["ok"]`:
@@ -264,11 +269,17 @@ API path: `/api/v1/balance`
 
 | Field | Description |
 | --- | --- |
+| `amount` | Amount in EUR debited from the balance. |
+| `balanceAfter` | On a 201, the balance after this debit. |
+| `expiresAt` | Five years from issue. |
 | `idempotencyKey` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` |  |
 | `message` | Short personal note shown with the gift. |
+| `mode` | Derived from the API key prefix. |
 | `product` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` |  |
-| `reference` | Your identifier. |
+| `redeemLink` | The only field you need to keep. |
+| `reference` | Always present. |
 | `senderName` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | Opaque voucher identifier. |
 
@@ -322,11 +333,17 @@ Create an instance: `$voucher = $client->Voucher();`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `amount` | `float` | Amount in EUR debited from the balance. |
+| `balanceAfter` | `float` | On a 201, the balance after this debit. |
+| `expiresAt` | `string` | Five years from issue. |
 | `idempotencyKey` | `string` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` | `bool` |  |
 | `message` | `string` | Short personal note shown with the gift. |
+| `mode` | `string` | Derived from the API key prefix. |
 | `product` | `string` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` | `array` |  |
-| `reference` | `string` | Your identifier. |
+| `redeemLink` | `string` | The only field you need to keep. |
+| `reference` | `string` | Always present. |
 | `senderName` | `string` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | `string` | Opaque voucher identifier. |
 
@@ -334,8 +351,16 @@ Create an instance: `$voucher = $client->Voucher();`
 
 ```php
 $voucher = $client->Voucher()->create([
+    "amount" => null, // float
+    "balanceAfter" => null, // float
+    "expiresAt" => null, // string
     "idempotencyKey" => null, // string
+    "idempotentReplay" => null, // bool
+    "mode" => null, // string
     "product" => null, // string
+    "redeemLink" => null, // string
+    "reference" => null, // string
+    "voucherToken" => null, // string
 ]);
 ```
 

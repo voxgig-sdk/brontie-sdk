@@ -37,6 +37,8 @@ require_once __DIR__ . '/TransformResponse.php';
 
 BrontieUtility::setRegistrar(function (BrontieUtility $u): void {
     $u->clean = [BrontieClean::class, 'call'];
+    $u->clean_add = [BrontieClean::class, 'add'];
+    $u->clean_explain = [BrontieDone::class, 'clean_explain'];
     $u->done = [BrontieDone::class, 'call'];
     $u->make_error = [BrontieMakeError::class, 'call'];
     $u->feature_add = [BrontieFeatureAdd::class, 'call'];

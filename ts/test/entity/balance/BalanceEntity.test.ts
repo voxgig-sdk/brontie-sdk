@@ -9,7 +9,7 @@ import { createLiveTransport } from '../../live-runner'
 import { runLiveEntity } from '../../live-entity'
 
 
-import { BrontieSDK, BaseFeature, stdutil } from '../../..'
+import { BrontieSDK, BaseFeature, config, stdutil } from '../../..'
 
 import {
   envOverride,
@@ -41,6 +41,18 @@ describe('BalanceEntity', async () => {
   })
 
 
+  test('validate', async (t) => {
+    if (null == (config as any).feature?.validate) {
+      t.skip('feature not present in this SDK: validate')
+      return
+    }
+    const client = BrontieSDK.test(undefined, { feature: { validate: { active: true } } })
+    await assert.rejects(client.Balance().load({"alertPercent":"x"} as any),
+      (err: any) => 'validate_failed' === err.code)
+  })
+
+
+
   test('basic', async (t) => {
 
     const live = 'TRUE' === process.env.BRONTIE_TEST_LIVE
@@ -51,7 +63,7 @@ describe('BalanceEntity', async () => {
     if (live) { t.skip('Covered by live operation scenarios'); return }
     const setup = basicSetup()
     if (setup.live) {
-      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"alertAt":{"a":true,"h":"Alert At","n":"alertAt","r":true,"sh":"The threshold resolved to a euro figure: `lastTopUp × alertPercent`.","t":["`$ONE`",["`$NUMBER`","`$NULL`"]],"key$":"alertAt","index$":0},"alertPercent":{"a":true,"h":"Alert Percent","n":"alertPercent","r":true,"sh":"Percentage of the most recent top-up at which the low-balance threshold sits.","t":"`$NUMBER`","key$":"alertPercent","index$":1},"balance":{"a":true,"h":"Balance","n":"balance","r":true,"t":"`$NUMBER`","key$":"balance","index$":2},"currency":{"a":true,"h":"Currency","n":"currency","r":true,"t":"`$STRING`","key$":"currency","index$":3}},"name":"balance","op":{"load":{"input":"data","name":"load","points":[{"a":true,"co":{"id":"GET /api/v1/balance","source":"openapi3","version":2},"g":{},"k":"http","li":{"assert":{"equal":{"currency":"EUR"}},"auth":"account","id":"balance","retention":"Read-only; creates nothing."},"m":"GET","o":"/api/v1/balance","q":{},"r":{},"s":[{"lit":"api"},{"lit":"v1"},{"lit":"balance"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"load"}},"relations":{"ancestors":[]},"key$":"balance","name__orig":"balance","Name":"Balance","name_":"balance","name-":"balance","NAME":"BALANCE","index$":0}, {"active":true,"entity":"balance","key$":"BasicBalanceFlow","kind":"basic","name":"BasicBalanceFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"balance_ref01","srcdatavar":"balance_ref01_data","suffix":"_dt0"},"m":{},"o":"load","s":[],"v":[{"apply":"TextFieldMark","def":{"mark":"Mark01-balance_ref01"}}],"index$":0}]}, 'Balance', {"GET /api/v1/balance":{"protocol":"http","parameters":[]}})
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"alertAt":{"a":true,"h":"Alert At","n":"alertAt","r":true,"sh":"The threshold resolved to a euro figure: `lastTopUp × alertPercent`.","t":["`$ONE`",["`$NUMBER`","`$NULL`"]],"key$":"alertAt","index$":0},"alertPercent":{"a":true,"h":"Alert Percent","n":"alertPercent","r":true,"sh":"Percentage of the most recent top-up at which the low-balance threshold sits.","t":"`$NUMBER`","key$":"alertPercent","index$":1},"balance":{"a":true,"h":"Balance","n":"balance","r":true,"t":"`$NUMBER`","key$":"balance","index$":2},"currency":{"a":true,"h":"Currency","n":"currency","r":true,"t":"`$STRING`","key$":"currency","index$":3}},"name":"balance","op":{"load":{"input":"data","name":"load","points":[{"a":true,"co":{"id":"GET /api/v1/balance","source":"openapi3","version":2},"g":{},"k":"http","li":{"assert":{"equal":{"currency":"EUR"}},"auth":"account","id":"balance","retention":"Read-only; creates nothing."},"m":"GET","o":"/api/v1/balance","q":{},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":"api"},{"lit":"v1"},{"lit":"balance"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"load"}},"relations":{"ancestors":[]},"key$":"balance","name__orig":"balance","Name":"Balance","name_":"balance","name-":"balance","NAME":"BALANCE","index$":0}, {"active":true,"entity":"balance","key$":"BasicBalanceFlow","kind":"basic","name":"BasicBalanceFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"balance_ref01","srcdatavar":"balance_ref01_data","suffix":"_dt0"},"m":{},"o":"load","s":[],"v":[{"apply":"TextFieldMark","def":{"mark":"Mark01-balance_ref01"}}],"index$":0}]}, 'Balance', {"GET /api/v1/balance":{"protocol":"http","parameters":[]}}, { strict: LIVE_STRICT, t })
     }
     const client = setup.client
     const struct = setup.struct
@@ -72,6 +84,12 @@ describe('BalanceEntity', async () => {
 })
 
 
+
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true
 
 function basicSetup(extra?: any) {
   // TODO: fix test def options

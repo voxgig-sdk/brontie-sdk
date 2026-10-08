@@ -112,14 +112,14 @@ fmt.Println(balance.GetName()) // "balance"
 
 #### `Load(reqmatch, ctrl map[string]any) (any, error)`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Returns the entity, whose record `Data()` reads; `err` is non-nil on failure.
 
 ```go
 result, err := client.Balance(nil).Load(nil, nil)
 if err != nil {
     panic(err)
 }
-fmt.Println(result)
+fmt.Println(result.(sdk.Entity).Data())
 ```
 
 ### Common Methods
@@ -139,6 +139,14 @@ Get or set the entity match criteria. Works the same as `Data()`.
 Create a new `BalanceEntity` instance with the same client and
 options.
 
+#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
+
+Run an operation through the pipeline and send its result items on the
+returned channel, which closes when the stream ends. A `StreamItem` holds
+one item in `Item`, or in `Err` the error that ended the stream: the
+error the operation itself would return, sent as the last value. Under
+`throw: false` in `callopts["ctrl"]`, no error is sent.
+
 #### `GetName() string`
 
 Return the entity name.
@@ -157,29 +165,61 @@ fmt.Println(voucher.GetName()) // "voucher"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `amount` | `float64` | Yes | Amount in EUR debited from the balance. |
+| `balanceAfter` | `float64` | Yes | On a 201, the balance after this debit. |
+| `expiresAt` | `string` | Yes | Five years from issue. |
 | `idempotencyKey` | `string` | Yes | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` | `bool` | Yes |  |
 | `message` | `string` | No | Short personal note shown with the gift. |
+| `mode` | `string` | Yes | Derived from the API key prefix. |
 | `product` | `string` | Yes | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` | `map[string]any` | No |  |
-| `reference` | `string` | No | Your identifier. |
+| `redeemLink` | `string` | Yes | The only field you need to keep. |
+| `reference` | `string` | Yes | Always present. |
 | `senderName` | `string` | No | Who the gift appears to be from, per call, so it can vary by course or cohort. |
-| `voucherToken` | `string` | No | Opaque voucher identifier. |
+| `voucherToken` | `string` | Yes | Opaque voucher identifier. |
+
+### Field Usage by Operation
+
+| Field | create |
+| --- | --- |
+| `amount` | - |
+| `balanceAfter` | - |
+| `expiresAt` | - |
+| `idempotencyKey` | - |
+| `idempotentReplay` | - |
+| `message` | - |
+| `mode` | - |
+| `product` | - |
+| `recipient` | - |
+| `redeemLink` | - |
+| `reference` | Yes |
+| `senderName` | - |
+| `voucherToken` | - |
 
 ### Operations
 
 #### `Create(reqdata, ctrl map[string]any) (any, error)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
 
 ```go
 result, err := client.Voucher(nil).Create(map[string]any{
+    "amount": 1,
+    "balanceAfter": 1,
+    "expiresAt": "example_expiresAt",
     "idempotencyKey": "example_idempotencyKey",
+    "idempotentReplay": true,
+    "mode": "example_mode",
     "product": "example_product",
+    "redeemLink": "example_redeemLink",
+    "reference": "example_reference",
+    "voucherToken": "example_voucherToken",
 }, nil)
 if err != nil {
     panic(err)
 }
-fmt.Println(result)
+fmt.Println(result.(sdk.Entity).Data())
 ```
 
 ### Common Methods
@@ -198,6 +238,14 @@ Get or set the entity match criteria. Works the same as `Data()`.
 
 Create a new `VoucherEntity` instance with the same client and
 options.
+
+#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
+
+Run an operation through the pipeline and send its result items on the
+returned channel, which closes when the stream ends. A `StreamItem` holds
+one item in `Item`, or in `Err` the error that ended the stream: the
+error the operation itself would return, sent as the last value. Under
+`throw: false` in `callopts["ctrl"]`, no error is sent.
 
 #### `GetName() string`
 
@@ -496,6 +544,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

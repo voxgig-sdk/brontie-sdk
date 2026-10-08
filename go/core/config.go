@@ -141,6 +141,7 @@ func MakeConfig() map[string]any {
 				},
 				"optspec": map[string]any{
 					"clearTimer": "`$FUNCTION`",
+					"now": "`$FUNCTION`",
 					"setTimer": "`$FUNCTION`",
 				},
 				"strict": false,
@@ -239,6 +240,10 @@ func MakeConfig() map[string]any {
 									"id": "balance",
 									"retention": "Read-only; creates nothing.",
 								},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -250,6 +255,28 @@ func MakeConfig() map[string]any {
 			"voucher": map[string]any{
 				"fields": []any{
 					map[string]any{
+						"name": "amount",
+						"title": "Amount",
+						"type": "`$NUMBER`",
+						"req": true,
+						"short": "Amount in EUR debited from the balance.",
+					},
+					map[string]any{
+						"name": "balanceAfter",
+						"title": "Balance After",
+						"type": "`$NUMBER`",
+						"req": true,
+						"short": "On a 201, the balance after this debit.",
+					},
+					map[string]any{
+						"name": "expiresAt",
+						"title": "Expires At",
+						"type": "`$STRING`",
+						"req": true,
+						"short": "Five years from issue.",
+						"format": "date-time",
+					},
+					map[string]any{
 						"name": "idempotencyKey",
 						"title": "Idempotency Key",
 						"type": "`$STRING`",
@@ -257,10 +284,23 @@ func MakeConfig() map[string]any {
 						"short": "Unique per gift on the partner side, scoped per partner and per mode.",
 					},
 					map[string]any{
+						"name": "idempotentReplay",
+						"title": "Idempotent Replay",
+						"type": "`$BOOLEAN`",
+						"req": true,
+					},
+					map[string]any{
 						"name": "message",
 						"title": "Message",
 						"type": "`$STRING`",
 						"short": "Short personal note shown with the gift.",
+					},
+					map[string]any{
+						"name": "mode",
+						"title": "Mode",
+						"type": "`$STRING`",
+						"req": true,
+						"short": "Derived from the API key prefix.",
 					},
 					map[string]any{
 						"name": "product",
@@ -275,10 +315,24 @@ func MakeConfig() map[string]any {
 						"type": "`$OBJECT`",
 					},
 					map[string]any{
+						"name": "redeemLink",
+						"title": "Redeem Link",
+						"type": "`$STRING`",
+						"req": true,
+						"short": "The only field you need to keep.",
+						"format": "uri",
+					},
+					map[string]any{
 						"name": "reference",
 						"title": "Reference",
 						"type": "`$STRING`",
-						"short": "Your identifier.",
+						"req": true,
+						"op": map[string]any{
+							"create": map[string]any{
+								"type": "`$STRING`",
+							},
+						},
+						"short": "Always present.",
 					},
 					map[string]any{
 						"name": "senderName",
@@ -290,6 +344,7 @@ func MakeConfig() map[string]any {
 						"name": "voucherToken",
 						"title": "Voucher Token",
 						"type": "`$STRING`",
+						"req": true,
 						"short": "Opaque voucher identifier.",
 						"readOnly": true,
 					},
@@ -335,6 +390,10 @@ func MakeConfig() map[string]any {
 									"auth": "account",
 									"excluded": "Issues a permanent voucher; no delete or refund path exists",
 									"id": "voucher-create",
+								},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
 								},
 							},
 						},

@@ -99,9 +99,9 @@ balance = client.Balance()
 
 ### Operations
 
-#### `load(reqmatch, ctrl=None) -> dict`
+#### `load(reqmatch, ctrl=None) -> BalanceEntity`
 
-Load a single entity matching the given criteria. Returns the entity data and raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and raises on error.
 
 ```python
 result = client.Balance().load()
@@ -146,24 +146,56 @@ voucher = client.Voucher()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `amount` | `float` | Yes | Amount in EUR debited from the balance. |
+| `balanceAfter` | `float` | Yes | On a 201, the balance after this debit. |
+| `expiresAt` | `str` | Yes | Five years from issue. |
 | `idempotencyKey` | `str` | Yes | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` | `bool` | Yes |  |
 | `message` | `str` | No | Short personal note shown with the gift. |
+| `mode` | `str` | Yes | Derived from the API key prefix. |
 | `product` | `str` | Yes | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` | `dict` | No |  |
-| `reference` | `str` | No | Your identifier. |
+| `redeemLink` | `str` | Yes | The only field you need to keep. |
+| `reference` | `str` | Yes | Always present. |
 | `senderName` | `str` | No | Who the gift appears to be from, per call, so it can vary by course or cohort. |
-| `voucherToken` | `str` | No | Opaque voucher identifier. |
+| `voucherToken` | `str` | Yes | Opaque voucher identifier. |
+
+### Field Usage by Operation
+
+| Field | create |
+| --- | --- |
+| `amount` | - |
+| `balanceAfter` | - |
+| `expiresAt` | - |
+| `idempotencyKey` | - |
+| `idempotentReplay` | - |
+| `message` | - |
+| `mode` | - |
+| `product` | - |
+| `recipient` | - |
+| `redeemLink` | - |
+| `reference` | Yes |
+| `senderName` | - |
+| `voucherToken` | - |
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> VoucherEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.Voucher().create({
+    "amount": 1,  # float
+    "balanceAfter": 1,  # float
+    "expiresAt": "example_expiresAt",  # str
     "idempotencyKey": "example_idempotencyKey",  # str
+    "idempotentReplay": True,  # bool
+    "mode": "example_mode",  # str
     "product": "example_product",  # str
+    "redeemLink": "example_redeemLink",  # str
+    "reference": "example_reference",  # str
+    "voucherToken": "example_voucherToken",  # str
 })
 ```
 
@@ -486,6 +518,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

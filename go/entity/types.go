@@ -30,13 +30,19 @@ type Voucher struct {
 
 // VoucherCreateData is the typed request payload for Voucher.CreateTyped.
 type VoucherCreateData struct {
+	Amount float64 `json:"amount"`
+	BalanceAfter float64 `json:"balanceAfter"`
+	ExpiresAt string `json:"expiresAt"`
 	IdempotencyKey string `json:"idempotencyKey"`
+	IdempotentReplay bool `json:"idempotentReplay"`
 	Message *string `json:"message,omitempty"`
+	Mode string `json:"mode"`
 	Product string `json:"product"`
 	Recipient *map[string]any `json:"recipient,omitempty"`
-	Reference *string `json:"reference,omitempty"`
+	RedeemLink string `json:"redeemLink"`
+	Reference string `json:"reference"`
 	SenderName *string `json:"senderName,omitempty"`
-	VoucherToken *string `json:"voucherToken,omitempty"`
+	VoucherToken string `json:"voucherToken"`
 }
 
 // asMap turns a typed request/data struct into the map[string]any the

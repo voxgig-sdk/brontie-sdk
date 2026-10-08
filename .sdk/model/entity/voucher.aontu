@@ -5,6 +5,28 @@ main: kit: entity: voucher: {
   alias: field: {}
 
   fields: {
+    amount: {
+      h: "Amount"
+      n: "amount"
+      r: true
+      sh: "Amount in EUR debited from the balance."
+      t: "`$NUMBER`"
+    }
+    balanceAfter: {
+      h: "Balance After"
+      n: "balanceAfter"
+      r: true
+      sh: "On a 201, the balance after this debit."
+      t: "`$NUMBER`"
+    }
+    expiresAt: {
+      fo: "date-time"
+      h: "Expires At"
+      n: "expiresAt"
+      r: true
+      sh: "Five years from issue."
+      t: "`$STRING`"
+    }
     idempotencyKey: {
       h: "Idempotency Key"
       n: "idempotencyKey"
@@ -12,11 +34,24 @@ main: kit: entity: voucher: {
       sh: "Unique per gift on the partner side, scoped per partner and per mode."
       t: "`$STRING`"
     }
+    idempotentReplay: {
+      h: "Idempotent Replay"
+      n: "idempotentReplay"
+      r: true
+      t: "`$BOOLEAN`"
+    }
     message: {
       h: "Message"
       n: "message"
       r: false
       sh: "Short personal note shown with the gift."
+      t: "`$STRING`"
+    }
+    mode: {
+      h: "Mode"
+      n: "mode"
+      r: true
+      sh: "Derived from the API key prefix."
       t: "`$STRING`"
     }
     product: {
@@ -32,11 +67,25 @@ main: kit: entity: voucher: {
       r: false
       t: "`$OBJECT`"
     }
+    redeemLink: {
+      fo: "uri"
+      h: "Redeem Link"
+      n: "redeemLink"
+      r: true
+      sh: "The only field you need to keep."
+      t: "`$STRING`"
+    }
     reference: {
       h: "Reference"
       n: "reference"
-      r: false
-      sh: "Your identifier."
+      op: {
+        create: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "Always present."
       t: "`$STRING`"
     }
     senderName: {
@@ -44,6 +93,13 @@ main: kit: entity: voucher: {
       n: "senderName"
       r: false
       sh: "Who the gift appears to be from, per call, so it can vary by course or cohort."
+      t: "`$STRING`"
+    }
+    voucherToken: {
+      h: "Voucher Token"
+      n: "voucherToken"
+      r: true
+      sh: "Opaque voucher identifier."
       t: "`$STRING`"
     }
   }
@@ -54,6 +110,14 @@ main: kit: entity: voucher: {
       name: "create"
       points: [
         {
+          bf: [
+            "idempotencyKey"
+            "message"
+            "product"
+            "recipient"
+            "reference"
+            "senderName"
+          ]
           co: {
             id: "POST /api/v1/vouchers"
             source: "openapi3"
@@ -66,6 +130,10 @@ main: kit: entity: voucher: {
           }
           m: "POST"
           o: "/api/v1/vouchers"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "api"

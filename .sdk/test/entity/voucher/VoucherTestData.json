@@ -2,33 +2,51 @@
   "existing": {
     "voucher": {
       "VOUCHER00": {
-        "idempotencyKey": "s46",
-        "message": "s47",
-        "product": "s48",
+        "amount": 130,
+        "balanceAfter": 131,
+        "expiresAt": "s84",
+        "idempotencyKey": "s85",
+        "idempotentReplay": true,
+        "message": "s87",
+        "mode": "s88",
+        "product": "s89",
         "recipient": {},
-        "reference": "s4a",
-        "senderName": "s4b",
-        "voucherToken": "s4c",
+        "redeemLink": "s8b",
+        "reference": "s8c",
+        "senderName": "s8d",
+        "voucherToken": "s8e",
         "id": "VOUCHER00"
       },
       "VOUCHER01": {
-        "idempotencyKey": "s8c",
-        "message": "s8d",
-        "product": "s8e",
+        "amount": 260,
+        "balanceAfter": 261,
+        "expiresAt": "s106",
+        "idempotencyKey": "s107",
+        "idempotentReplay": true,
+        "message": "s109",
+        "mode": "s10a",
+        "product": "s10b",
         "recipient": {},
-        "reference": "s90",
-        "senderName": "s91",
-        "voucherToken": "s92",
+        "redeemLink": "s10d",
+        "reference": "s10e",
+        "senderName": "s10f",
+        "voucherToken": "s110",
         "id": "VOUCHER01"
       },
       "VOUCHER02": {
-        "idempotencyKey": "sd2",
-        "message": "sd3",
-        "product": "sd4",
+        "amount": 390,
+        "balanceAfter": 391,
+        "expiresAt": "s188",
+        "idempotencyKey": "s189",
+        "idempotentReplay": true,
+        "message": "s18b",
+        "mode": "s18c",
+        "product": "s18d",
         "recipient": {},
-        "reference": "sd6",
-        "senderName": "sd7",
-        "voucherToken": "sd8",
+        "redeemLink": "s18f",
+        "reference": "s190",
+        "senderName": "s191",
+        "voucherToken": "s192",
         "id": "VOUCHER02"
       }
     }
@@ -36,13 +54,19 @@
   "new": {
     "voucher": {
       "voucher_ref01": {
-        "idempotencyKey": "s118",
-        "message": "s119",
-        "product": "s11a",
+        "amount": 520,
+        "balanceAfter": 521,
+        "expiresAt": "s20a",
+        "idempotencyKey": "s20b",
+        "idempotentReplay": true,
+        "message": "s20d",
+        "mode": "s20e",
+        "product": "s20f",
         "recipient": {},
-        "reference": "s11c",
-        "senderName": "s11d",
-        "voucherToken": "s11e"
+        "redeemLink": "s211",
+        "reference": "s212",
+        "senderName": "s213",
+        "voucherToken": "s214"
       }
     }
   },

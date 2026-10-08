@@ -52,7 +52,7 @@
 <p>One example per SDK, generated from the API model. The argument names are the parameters and fields of this entity, and the values are placeholders. The examples are not compiled or executed.</p>
 <h3 id="golang">Golang</h3>
 <p>Construct <code>client</code> as shown in the <a href="../sdks/go.html#set-up-the-client">Golang setup</a>, then call the operations:</p>
-<pre><code class="language-go">created, err := client.Voucher(nil).Create(map[string]any{&quot;idempotencyKey&quot;: &quot;example&quot;, &quot;product&quot;: &quot;example&quot;}, nil)
+<pre><code class="language-go">created, err := client.Voucher(nil).Create(map[string]any{&quot;amount&quot;: 1, &quot;balanceAfter&quot;: 1, &quot;expiresAt&quot;: &quot;example&quot;, &quot;idempotencyKey&quot;: &quot;example&quot;, &quot;idempotentReplay&quot;: true, &quot;mode&quot;: &quot;example&quot;, &quot;product&quot;: &quot;example&quot;, &quot;redeemLink&quot;: &quot;example&quot;, &quot;reference&quot;: &quot;example&quot;, &quot;voucherToken&quot;: &quot;example&quot;}, nil)
 if err != nil {
     panic(err)
 }
@@ -60,23 +60,23 @@ fmt.Println(created)
 </code></pre>
 <h3 id="lua">Lua</h3>
 <p>Construct <code>client</code> as shown in the <a href="../sdks/lua.html#set-up-the-client">Lua setup</a>, then call the operations:</p>
-<pre><code class="language-lua">local created, err = client:Voucher():create({ idempotencyKey = &quot;example&quot;, product = &quot;example&quot; })
+<pre><code class="language-lua">local created, err = client:Voucher():create({ amount = 1, balanceAfter = 1, expiresAt = &quot;example&quot;, idempotencyKey = &quot;example&quot;, idempotentReplay = true, mode = &quot;example&quot;, product = &quot;example&quot;, redeemLink = &quot;example&quot;, reference = &quot;example&quot;, voucherToken = &quot;example&quot; })
 </code></pre>
 <h3 id="php">PHP</h3>
 <p>Construct <code>client</code> as shown in the <a href="../sdks/php.html#set-up-the-client">PHP setup</a>, then call the operations:</p>
-<pre><code class="language-php">$created = $client-&gt;Voucher()-&gt;create([&quot;idempotencyKey&quot; =&gt; &quot;example&quot;, &quot;product&quot; =&gt; &quot;example&quot;]);
+<pre><code class="language-php">$created = $client-&gt;Voucher()-&gt;create([&quot;amount&quot; =&gt; 1, &quot;balanceAfter&quot; =&gt; 1, &quot;expiresAt&quot; =&gt; &quot;example&quot;, &quot;idempotencyKey&quot; =&gt; &quot;example&quot;, &quot;idempotentReplay&quot; =&gt; true, &quot;mode&quot; =&gt; &quot;example&quot;, &quot;product&quot; =&gt; &quot;example&quot;, &quot;redeemLink&quot; =&gt; &quot;example&quot;, &quot;reference&quot; =&gt; &quot;example&quot;, &quot;voucherToken&quot; =&gt; &quot;example&quot;]);
 </code></pre>
 <h3 id="python">Python</h3>
 <p>Construct <code>client</code> as shown in the <a href="../sdks/py.html#set-up-the-client">Python setup</a>, then call the operations:</p>
-<pre><code class="language-py">created = client.Voucher().create({ &quot;idempotencyKey&quot;: &quot;example&quot;, &quot;product&quot;: &quot;example&quot; })
+<pre><code class="language-py">created = client.Voucher().create({ &quot;amount&quot;: 1, &quot;balanceAfter&quot;: 1, &quot;expiresAt&quot;: &quot;example&quot;, &quot;idempotencyKey&quot;: &quot;example&quot;, &quot;idempotentReplay&quot;: True, &quot;mode&quot;: &quot;example&quot;, &quot;product&quot;: &quot;example&quot;, &quot;redeemLink&quot;: &quot;example&quot;, &quot;reference&quot;: &quot;example&quot;, &quot;voucherToken&quot;: &quot;example&quot; })
 </code></pre>
 <h3 id="ruby">Ruby</h3>
 <p>Construct <code>client</code> as shown in the <a href="../sdks/rb.html#set-up-the-client">Ruby setup</a>, then call the operations:</p>
-<pre><code class="language-rb">created = client.Voucher.create({ &quot;idempotencyKey&quot; =&gt; &quot;example&quot;, &quot;product&quot; =&gt; &quot;example&quot; })
+<pre><code class="language-rb">created = client.Voucher.create({ &quot;amount&quot; =&gt; 1, &quot;balanceAfter&quot; =&gt; 1, &quot;expiresAt&quot; =&gt; &quot;example&quot;, &quot;idempotencyKey&quot; =&gt; &quot;example&quot;, &quot;idempotentReplay&quot; =&gt; true, &quot;mode&quot; =&gt; &quot;example&quot;, &quot;product&quot; =&gt; &quot;example&quot;, &quot;redeemLink&quot; =&gt; &quot;example&quot;, &quot;reference&quot; =&gt; &quot;example&quot;, &quot;voucherToken&quot; =&gt; &quot;example&quot; })
 </code></pre>
 <h3 id="typescript">TypeScript</h3>
 <p>Construct <code>client</code> as shown in the <a href="../sdks/ts.html#set-up-the-client">TypeScript setup</a>, then call the operations:</p>
-<pre><code class="language-ts">const created = await client.Voucher().create({ idempotencyKey: &quot;example&quot;, product: &quot;example&quot; })
+<pre><code class="language-ts">const created = await client.Voucher().create({ amount: 1, balanceAfter: 1, expiresAt: &quot;example&quot;, idempotencyKey: &quot;example&quot;, idempotentReplay: true, mode: &quot;example&quot;, product: &quot;example&quot;, redeemLink: &quot;example&quot;, reference: &quot;example&quot;, voucherToken: &quot;example&quot; })
 </code></pre>
 <h2 id="fields">Fields</h2>
 <table>
@@ -90,16 +90,46 @@ fmt.Println(created)
 </thead>
 <tbody>
 <tr>
+<td><code>amount</code></td>
+<td><code>number</code></td>
+<td>Yes</td>
+<td>Amount in EUR debited from the balance.</td>
+</tr>
+<tr>
+<td><code>balanceAfter</code></td>
+<td><code>number</code></td>
+<td>Yes</td>
+<td>On a 201, the balance after this debit.</td>
+</tr>
+<tr>
+<td><code>expiresAt</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Five years from issue.</td>
+</tr>
+<tr>
 <td><code>idempotencyKey</code></td>
 <td><code>string</code></td>
 <td>Yes</td>
 <td>Unique per gift on the partner side, scoped per partner and per mode.</td>
 </tr>
 <tr>
+<td><code>idempotentReplay</code></td>
+<td><code>boolean</code></td>
+<td>Yes</td>
+<td>Idempotent Replay</td>
+</tr>
+<tr>
 <td><code>message</code></td>
 <td><code>string</code></td>
 <td>No</td>
 <td>Short personal note shown with the gift.</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Derived from the API key prefix.</td>
 </tr>
 <tr>
 <td><code>product</code></td>
@@ -114,10 +144,16 @@ fmt.Println(created)
 <td>Recipient</td>
 </tr>
 <tr>
+<td><code>redeemLink</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>The only field you need to keep.</td>
+</tr>
+<tr>
 <td><code>reference</code></td>
 <td><code>string</code></td>
-<td>No</td>
-<td>Your identifier.</td>
+<td>Yes</td>
+<td>Always present.</td>
 </tr>
 <tr>
 <td><code>senderName</code></td>
@@ -128,7 +164,7 @@ fmt.Println(created)
 <tr>
 <td><code>voucherToken</code></td>
 <td><code>string</code></td>
-<td>No</td>
+<td>Yes</td>
 <td>Opaque voucher identifier.</td>
 </tr>
 </tbody>
@@ -398,7 +434,7 @@ fmt.Println(created)
 </tr>
 </tbody>
 </table>
-<h5 id="500-internal-error-always-this-exact-shape-123-error-code-125-even-for-a-fault-deep-inside-the-request-a-top-level-guard-on-this-route-added-after-the-rest-of-this-spec-was-first-verified-catches-anything-that-would-otherwise-have-escaped-as-a-bare-platform-error-with-no-code-to-branch-on-for-the-ordinary-case-something-failed-before-any-state-was-touched-or-during-the-mint-step-itself-any-partial-work-is-rolled-back-before-responding-a-debit-is-refunded-and-the-claim-released-so-retrying-with-the-same-key-is-safe-and-will-succeed-one-case-is-narrower-if-the-fault-happens-while-this-route-is-already-handling-an-abandoned-claim-from-an-earlier-attempt-see-issue_stuck-above-nothing-is-rolled-back-on-purpose-a-debit-from-that-earlier-attempt-may-or-may-not-have-gone-through-and-guessing-wrong-would-either-double-charge-or-lose-track-of-a-voucher-quotsafe-to-retryquot-still-holds-in-the-sense-that-matters-the-same-key-can-never-mint-twice-it-does-not-guarantee-the-retry-succeeds-in-this-specific-case-it-will-most-likely-come-back-as-409-issue_stuck-rather-than-a-fresh-201-which-is-the-correct-outcome-not-a-bug-to-work-around" class="status" data-status="5xx">500: Internal error. Always this exact shape, <code>&amp;#123; error, code &amp;#125;</code>, even for a fault deep inside the request. A top-level guard on this route (added after the rest of this spec was first verified) catches anything that would otherwise have escaped as a bare platform error with no <code>code</code> to branch on. For the ordinary case, something failed before any state was touched, or during the mint step itself, any partial work is rolled back before responding: a debit is refunded and the claim released, so retrying with the same key is safe and will succeed. One case is narrower: if the fault happens while this route is already handling an abandoned claim from an earlier attempt (see <code>issue_stuck</code> above), nothing is rolled back on purpose, a debit from that earlier attempt may or may not have gone through, and guessing wrong would either double-charge or lose track of a voucher. &quot;Safe to retry&quot; still holds in the sense that matters: the same key can never mint twice. It does not guarantee the retry succeeds, in this specific case it will most likely come back as <code>409 issue_stuck</code> rather than a fresh <code>201</code>, which is the correct outcome, not a bug to work around.</h5>
+<h5 id="500-internal-error-always-this-exact-shape--123-error-code-125--even-for-a-fault-deep-inside-the-request-a-top-level-guard-on-this-route-added-after-the-rest-of-this-spec-was-first-verified-catches-anything-that-would-otherwise-have-escaped-as-a-bare-platform-error-with-no-code-to-branch-on-for-the-ordinary-case-something-failed-before-any-state-was-touched-or-during-the-mint-step-itself-any-partial-work-is-rolled-back-before-responding-a-debit-is-refunded-and-the-claim-released-so-retrying-with-the-same-key-is-safe-and-will-succeed-one-case-is-narrower-if-the-fault-happens-while-this-route-is-already-handling-an-abandoned-claim-from-an-earlier-attempt-see-issue_stuck-above-nothing-is-rolled-back-on-purpose-a-debit-from-that-earlier-attempt-may-or-may-not-have-gone-through-and-guessing-wrong-would-either-double-charge-or-lose-track-of-a-voucher-quotsafe-to-retryquot-still-holds-in-the-sense-that-matters-the-same-key-can-never-mint-twice-it-does-not-guarantee-the-retry-succeeds-in-this-specific-case-it-will-most-likely-come-back-as-409-issue_stuck-rather-than-a-fresh-201-which-is-the-correct-outcome-not-a-bug-to-work-around" class="status" data-status="5xx">500: Internal error. Always this exact shape,  <code>&amp;#123; error, code &amp;#125;</code> , even for a fault deep inside the request. A top-level guard on this route (added after the rest of this spec was first verified) catches anything that would otherwise have escaped as a bare platform error with no <code>code</code> to branch on. For the ordinary case, something failed before any state was touched, or during the mint step itself, any partial work is rolled back before responding: a debit is refunded and the claim released, so retrying with the same key is safe and will succeed. One case is narrower: if the fault happens while this route is already handling an abandoned claim from an earlier attempt (see <code>issue_stuck</code> above), nothing is rolled back on purpose, a debit from that earlier attempt may or may not have gone through, and guessing wrong would either double-charge or lose track of a voucher. &quot;Safe to retry&quot; still holds in the sense that matters: the same key can never mint twice. It does not guarantee the retry succeeds, in this specific case it will most likely come back as <code>409 issue_stuck</code> rather than a fresh <code>201</code>, which is the correct outcome, not a bug to work around.</h5>
 <p><code>application/json</code></p>
 <table>
 <thead>

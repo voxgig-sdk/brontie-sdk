@@ -14,7 +14,7 @@ Full documentation for this SDK: [https://voxgig-sdk.github.io/brontie-sdk/](htt
 
 > TypeScript, Python, PHP, Golang, Ruby, Lua SDKs, a CLI with an interactive REPL, and an MCP server for AI agents — all generated from one OpenAPI spec by [@voxgig/sdkgen](https://github.com/voxgig/sdkgen).
 
-> **Features:** `undefined`, `undefined`, `undefined`, `undefined`, `undefined`, `undefined`, `undefined`, `undefined` — opt-in,
+> **Features:** `debug`, `idempotency`, `metrics`, `paging`, `ratelimit`, `retry`, `test`, `timeout` — opt-in,
 > inactive until switched on, and configured per client. See the Features
 > section of any SDK README below for what each one does.
 
@@ -52,9 +52,8 @@ const client = BrontieSDK.test({
   },
 })
 const balance = await client.Balance().load()
-// balance is the Balance entity, populated with mock data
-// — call balance.data() for the record itself
-console.log(balance)
+// balance is the Balance entity; .data() reads its mock record
+console.log(balance.data())
 ```
 
 ### Python
@@ -62,7 +61,7 @@ console.log(balance)
 ```python
 client = BrontieSDK.test()
 balance = client.Balance().load()
-print(balance)
+print(balance.data_get())
 ```
 
 ### PHP
@@ -105,14 +104,14 @@ local result, err = client:Balance():load()
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@voxgig-sdk/brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
-| Python | `voxgig-sdk-brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
-| PHP | `voxgig-sdk/brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
+| TypeScript | `@voxgig-sdk/brontie-sdk` | publish pending — [install from source](ts/README.md#install) |
+| Python | `voxgig-sdk-brontie-sdk` | publish pending — [install from source](py/README.md#install) |
+| PHP | `voxgig-sdk/brontie-sdk` | publish pending — [install from source](php/README.md#install) |
 | Golang | `github.com/voxgig-sdk/brontie-sdk/go` | `go get github.com/voxgig-sdk/brontie-sdk/go@latest` |
-| Ruby | `voxgig-sdk-brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
-| Lua | `voxgig-sdk-brontie-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/brontie-sdk/tags) |
-| Go CLI | `github.com/voxgig-sdk/brontie-sdk/go-cli` | `go install github.com/voxgig-sdk/brontie-sdk/go-cli/cmd/brontie@latest` |
-| Go MCP server | `github.com/voxgig-sdk/brontie-sdk/go-mcp` | `go get github.com/voxgig-sdk/brontie-sdk/go-mcp@latest` |
+| Ruby | `voxgig-sdk-brontie-sdk` | publish pending — [install from source](rb/README.md#install) |
+| Lua | `voxgig-sdk-brontie-sdk` | publish pending — [install from source](lua/README.md#install) |
+| Go CLI | `github.com/voxgig-sdk/brontie-sdk/go-cli` | build from source — [go-cli/README.md](go-cli/README.md) |
+| Go MCP server | `github.com/voxgig-sdk/brontie-sdk/go-mcp` | build from source — [go-mcp/README.md](go-mcp/README.md) |
 
 ## Quickstart
 
@@ -125,9 +124,9 @@ const client = new BrontieSDK({
   apikey: process.env.BRONTIE_APIKEY,
 })
 
-// Load balance data (returns a Balance)
+// Load a specific balance (returns the entity, a BalanceEntity)
 const balance = await client.Balance().load()
-console.log(balance)
+console.log(balance.data())
 ```
 
 See the [TypeScript README](ts/README.md) for the full guide.
@@ -142,9 +141,10 @@ See the [TypeScript README](ts/README.md) for the full guide.
 
 ## Use it from an AI agent (MCP)
 
-The generated MCP server exposes every operation in this SDK as an
-[MCP](https://modelcontextprotocol.io) tool that Claude, Cursor or Cline
-can call directly. Build and register it:
+The generated MCP server exposes this SDK's load operations as
+[MCP](https://modelcontextprotocol.io) tools that Claude, Cursor or Cline
+can call directly. It only reads: create, update, patch and remove become tools when the SDK's model sets
+`main: kit: target: 'go-mcp': tool: write: true`. Build and register it:
 
 ```bash
 cd go-mcp && go build -o brontie-mcp .
@@ -187,9 +187,9 @@ client = BrontieSDK({
 })
 
 
-# Load a specific balance (returns the record, raises on error)
+# Load a specific balance (returns the entity, raises on error)
 balance = client.Balance().load()
-print(balance)
+print(balance.data_get())
 ```
 
 ### PHP
@@ -203,7 +203,7 @@ $client = new BrontieSDK([
 ]);
 
 
-// Load a specific balance (returns the ENTITY; call data_get() for the record; throws on error)
+// Load a specific balance (returns the entity; data_get() reads its record; throws on error)
 $balance = $client->Balance()->load();
 print_r($balance->data_get());
 ```
@@ -217,12 +217,12 @@ client := sdk.NewBrontieSDK(map[string]any{
     "apikey": os.Getenv("BRONTIE_APIKEY"),
 })
 
-// Load balance data
+// Load a specific balance (returns the entity; err is non-nil on failure)
 balance, err := client.Balance(nil).Load(nil, nil)
 if err != nil {
     panic(err)
 }
-fmt.Println(balance)
+fmt.Println(balance.(sdk.Entity).Data())
 ```
 
 ### Ruby
@@ -235,24 +235,26 @@ client = BrontieSDK.new({
 })
 
 
-# Load a specific balance (returns the ENTITY; call data_get for the record)
+# Load a specific balance (returns the entity; data_get reads its record; raises on error)
 balance = client.Balance.load()
-puts balance
+puts balance.data_get
 ```
 
 ### Lua
 
 ```lua
 local sdk = require("brontie_sdk")
+local json = require("dkjson")
 
 local client = sdk.new({
   apikey = os.getenv("BRONTIE_APIKEY"),
 })
 
 
--- Load a specific balance
+-- Load a specific balance (returns the entity; err on failure)
 local balance, err = client:Balance():load()
-print(balance)
+if err then error(err) end
+print(json.encode(balance:data_get()))
 ```
 
 ## Direct and prepare
@@ -278,10 +280,9 @@ const result = await client.direct({
   method: 'GET',
   params: { id: 'example' },
 })
-if (result instanceof Error) {
-  throw result
+if (result.ok) {
+  console.log(result.data)
 }
-console.log(result.data)
 ```
 
 **Python:**
@@ -379,10 +380,12 @@ customizable without forking any upstream tool:
 - **Templates** (`.sdk/tm/`) and **components** (`.sdk/src/cmp/`) are
   the two layers of generation, copied into this repo: templates are the
   literal per-language source, components generate the API-shaped parts.
-- **Regeneration merges.** By default, newly generated content is
-  three-way merged into existing files, so generator updates and local
-  edits usually converge without manual conflict handling. A project can
-  opt for plain overwrite instead.
+- **Regeneration overwrites.** Each run rewrites every generated file from
+  the model, the templates and the components, so an edit made to
+  generated output is lost. Say what this project needs in its own model
+  (`.sdk/model/sdk.aontu`), or extend a target with a component of its
+  own in `.sdk/src/cmp/<target>/`, registered with `registerComponent`,
+  which `voxgig-sdkgen doctor` reports as an addition rather than drift.
 - **Custom features and entire custom targets** arrive through sdkgen
   packages (`voxgig-sdkgen package add`), on the same rails as the
   bundled languages, and `voxgig-sdkgen doctor` reports any drift from

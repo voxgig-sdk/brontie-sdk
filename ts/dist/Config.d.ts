@@ -110,6 +110,7 @@ declare class Config {
             };
             optspec: {
                 clearTimer: string;
+                now: string;
                 setTimer: string;
             };
             strict: boolean;
@@ -180,6 +181,10 @@ declare class Config {
                             id: string;
                             retention: string;
                         };
+                        response: {
+                            kind: string;
+                            media: string;
+                        };
                     }[];
                 };
             };
@@ -194,6 +199,26 @@ declare class Config {
                 type: string;
                 req: boolean;
                 short: string;
+                format?: undefined;
+                op?: undefined;
+                readOnly?: undefined;
+            } | {
+                name: string;
+                title: string;
+                type: string;
+                req: boolean;
+                short: string;
+                format: string;
+                op?: undefined;
+                readOnly?: undefined;
+            } | {
+                name: string;
+                title: string;
+                type: string;
+                req: boolean;
+                short?: undefined;
+                format?: undefined;
+                op?: undefined;
                 readOnly?: undefined;
             } | {
                 name: string;
@@ -201,6 +226,8 @@ declare class Config {
                 type: string;
                 short: string;
                 req?: undefined;
+                format?: undefined;
+                op?: undefined;
                 readOnly?: undefined;
             } | {
                 name: string;
@@ -208,14 +235,31 @@ declare class Config {
                 type: string;
                 req?: undefined;
                 short?: undefined;
+                format?: undefined;
+                op?: undefined;
                 readOnly?: undefined;
             } | {
                 name: string;
                 title: string;
                 type: string;
+                req: boolean;
+                op: {
+                    create: {
+                        type: string;
+                    };
+                };
+                short: string;
+                format?: undefined;
+                readOnly?: undefined;
+            } | {
+                name: string;
+                title: string;
+                type: string;
+                req: boolean;
                 short: string;
                 readOnly: boolean;
-                req?: undefined;
+                format?: undefined;
+                op?: undefined;
             })[];
             id: {
                 field: string;
@@ -245,6 +289,10 @@ declare class Config {
                             auth: string;
                             excluded: string;
                             id: string;
+                        };
+                        response: {
+                            kind: string;
+                            media: string;
                         };
                     }[];
                 };

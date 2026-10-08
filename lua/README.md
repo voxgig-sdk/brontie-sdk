@@ -12,7 +12,7 @@ It exposes the API as capitalised, semantic **Entities** — e.g. `client:Balanc
 
 ## Install
 This package is not yet published to LuaRocks. Install it from the
-GitHub release tag (`lua/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/brontie-sdk/releases)),
+GitHub release tag (`lua/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/brontie-sdk/tags)),
 or add the source directory to your `LUA_PATH`:
 
 ```bash
@@ -37,10 +37,12 @@ local client = sdk.new({
 
 ### 3. Load a balance
 
+`load` returns the entity; `data_get()` reads its record.
+
 ```lua
 local balance, err = client:Balance():load()
 if err then error(err) end
-print(balance)
+for k, val in pairs(balance:data_get()) do print(k, val) end
 ```
 
 
@@ -109,7 +111,7 @@ Create a mock client for unit testing — no server required:
 local client = sdk.test()
 
 local result, err = client:Balance():load()
--- result is the returned data; err is set on failure
+-- result is the entity; data_get() reads its mock record; err is set on failure
 ```
 
 ### Use a custom fetch function
@@ -198,8 +200,8 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `(reqmatch, ctrl) -> any, err` | Load a single entity by match criteria. |
-| `create` | `(reqdata, ctrl) -> any, err` | Create a new entity. |
+| `load` | `(reqmatch, ctrl) -> any, err` | Load a single entity by match criteria, and return it. |
+| `create` | `(reqdata, ctrl) -> any, err` | Create a new entity, and return it. |
 | `data_get` | `() -> table` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> table` | Get entity match criteria. |
@@ -209,18 +211,18 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return `(value, err)`. The `value` is the operation's
-data **directly** — there is no wrapper:
+Entity operations return `(value, err)`. The `value` is the entity
+itself — there is no wrapper:
 
 | Operation | `value` |
 | --- | --- |
-| `load` / `create` | the entity record (a `table`) |
+| `load` / `create` | the entity, whose `data_get()` reads its record (a `table`) |
 
 Check `err` first (it is non-`nil` on failure), then use `value`:
 
     local balance, err = client:Balance():load()
     if err then error(err) end
-    -- balance is the loaded record
+    -- balance is the loaded entity
 
 Only `direct()` returns a response envelope — a `table` with `ok`,
 `status`, `headers`, and `data` keys.
@@ -244,11 +246,17 @@ API path: `/api/v1/balance`
 
 | Field | Description |
 | --- | --- |
+| `amount` | Amount in EUR debited from the balance. |
+| `balanceAfter` | On a 201, the balance after this debit. |
+| `expiresAt` | Five years from issue. |
 | `idempotencyKey` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` |  |
 | `message` | Short personal note shown with the gift. |
+| `mode` | Derived from the API key prefix. |
 | `product` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` |  |
-| `reference` | Your identifier. |
+| `redeemLink` | The only field you need to keep. |
+| `reference` | Always present. |
 | `senderName` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | Opaque voucher identifier. |
 
@@ -301,11 +309,17 @@ Create an instance: `local voucher = client:Voucher(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `amount` | `number` | Amount in EUR debited from the balance. |
+| `balanceAfter` | `number` | On a 201, the balance after this debit. |
+| `expiresAt` | `string` | Five years from issue. |
 | `idempotencyKey` | `string` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` | `boolean` |  |
 | `message` | `string` | Short personal note shown with the gift. |
+| `mode` | `string` | Derived from the API key prefix. |
 | `product` | `string` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` | `table` |  |
-| `reference` | `string` | Your identifier. |
+| `redeemLink` | `string` | The only field you need to keep. |
+| `reference` | `string` | Always present. |
 | `senderName` | `string` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | `string` | Opaque voucher identifier. |
 
@@ -313,8 +327,16 @@ Create an instance: `local voucher = client:Voucher(nil)`
 
 ```lua
 local voucher, err = client:Voucher():create({
+  amount = 1, -- number
+  balanceAfter = 1, -- number
+  expiresAt = "example_expiresAt", -- string
   idempotencyKey = "example_idempotencyKey", -- string
+  idempotentReplay = true, -- boolean
+  mode = "example_mode", -- string
   product = "example_product", -- string
+  redeemLink = "example_redeemLink", -- string
+  reference = "example_reference", -- string
+  voucherToken = "example_voucherToken", -- string
 })
 ```
 

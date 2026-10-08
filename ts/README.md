@@ -15,9 +15,13 @@ predictable and low-friction for both humans and AI agents.
 
 ## Install
 This package is not yet published to npm. Install it from the GitHub
-release tag (`ts/vX.Y.Z`):
+release tag (`ts/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/brontie-sdk/tags)), or from a
+clone, which carries the compiled `dist/`:
 
-- Releases: [https://github.com/voxgig-sdk/brontie-sdk/releases](https://github.com/voxgig-sdk/brontie-sdk/releases)
+```bash
+git clone https://github.com/voxgig-sdk/brontie-sdk
+npm install ./brontie-sdk/ts
+```
 
 
 ## Tutorial: your first API call
@@ -37,12 +41,12 @@ const client = new BrontieSDK({
 
 ### 3. Load a balance
 
-`load()` returns the entity directly and throws on failure:
+`load()` returns the entity and throws on failure; `.data()` reads its record:
 
 ```ts
 try {
   const balance = await client.Balance().load()
-  console.log(balance)
+  console.log(balance.data())
 } catch (err) {
   console.error('load failed:', err)
 }
@@ -56,14 +60,15 @@ Entity operations reject on failure, so wrap them in `try` / `catch`:
 ```ts
 try {
   const balance = await client.Balance().load()
-  console.log(balance)
+  console.log(balance.data())
 } catch (err) {
   console.error('load failed:', err)
 }
 ```
 
 The low-level `direct()` method does **not** throw — it returns the
-value or an `Error`, so check the result before using it:
+result envelope. Branch on `ok`; on failure `status` holds the HTTP status
+(for error responses) and `err` holds the error:
 
 ```ts
 const result = await client.direct({
@@ -72,8 +77,8 @@ const result = await client.direct({
   params: { id: 'example_id' },
 })
 
-if (result instanceof Error) {
-  throw result
+if (!result.ok) {
+  console.error('request failed:', result.status, result.err)
 }
 ```
 
@@ -91,9 +96,6 @@ const result = await client.direct({
   params: { id: 'example' },
 })
 
-if (result instanceof Error) {
-  throw result
-}
 if (result.ok) {
   console.log(result.status)  // 200
   console.log(result.data)    // response body
@@ -123,9 +125,8 @@ Create a mock client for unit testing — no server required:
 const client = BrontieSDK.test()
 
 const balance = await client.Balance().load()
-// balance is the entity, populated with mock response data
-// — call balance.data() for the record itself
-console.log(balance)
+// balance is the Balance entity; .data() reads its mock record
+console.log(balance.data())
 ```
 
 You can also use the instance method:
@@ -245,8 +246,8 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `load(reqmatch?, ctrl?): Promise<Entity>` | Load a single entity by match criteria. |
-| `create` | `create(reqdata?, ctrl?): Promise<Entity>` | Create a new entity. |
+| `load` | `load(reqmatch?, ctrl?): Promise<Entity>` | Load a single entity by match criteria, and return it. |
+| `create` | `create(reqdata?, ctrl?): Promise<Entity>` | Create a new entity, and return it. |
 | `data` | `data(data?: Partial<Entity>): Entity` | Get or set entity data. |
 | `match` | `match(match?: Partial<Entity>): Partial<Entity>` | Get or set entity match criteria. |
 | `make` | `make(): Entity` | Create a new instance with the same options. |
@@ -255,8 +256,8 @@ All entities share the same interface.
 
 #### Return values
 
-Entity operations resolve to the entity data directly — there is no
-result envelope:
+Entity operations resolve to the entity itself — there is no result
+envelope, and an entity's `data()` reads its record:
 
 - `load` and `create` resolve to a single entity object.
 
@@ -311,11 +312,17 @@ API path: `/api/v1/balance`
 
 | Field | Description |
 | --- | --- |
+| `amount` | Amount in EUR debited from the balance. |
+| `balanceAfter` | On a 201, the balance after this debit. |
+| `expiresAt` | Five years from issue. |
 | `idempotencyKey` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` |  |
 | `message` | Short personal note shown with the gift. |
+| `mode` | Derived from the API key prefix. |
 | `product` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` |  |
-| `reference` | Your identifier. |
+| `redeemLink` | The only field you need to keep. |
+| `reference` | Always present. |
 | `senderName` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | Opaque voucher identifier. |
 
@@ -368,11 +375,17 @@ Create an instance: `const voucher = client.Voucher()`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `amount` | `number` | Amount in EUR debited from the balance. |
+| `balanceAfter` | `number` | On a 201, the balance after this debit. |
+| `expiresAt` | `string` | Five years from issue. |
 | `idempotencyKey` | `string` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` | `boolean` |  |
 | `message` | `string` | Short personal note shown with the gift. |
+| `mode` | `string` | Derived from the API key prefix. |
 | `product` | `string` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` | `Record<string, any>` |  |
-| `reference` | `string` | Your identifier. |
+| `redeemLink` | `string` | The only field you need to keep. |
+| `reference` | `string` | Always present. |
 | `senderName` | `string` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | `string` | Opaque voucher identifier. |
 
@@ -380,8 +393,16 @@ Create an instance: `const voucher = client.Voucher()`
 
 ```ts
 const voucher = await client.Voucher().create({
+  amount: 1,
+  balanceAfter: 1,
+  expiresAt: 'example_expiresAt',
   idempotencyKey: 'example_idempotencyKey',
+  idempotentReplay: true,
+  mode: 'example_mode',
   product: 'example_product',
+  redeemLink: 'example_redeemLink',
+  reference: 'example_reference',
+  voucherToken: 'example_voucherToken',
 })
 ```
 

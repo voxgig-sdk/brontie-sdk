@@ -107,7 +107,7 @@ balance = client.Balance
 
 #### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria. Raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get` reads, and raises on error.
 
 ```ruby
 result = client.Balance.load()
@@ -153,24 +153,56 @@ voucher = client.Voucher
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `amount` | `Float` | Yes | Amount in EUR debited from the balance. |
+| `balanceAfter` | `Float` | Yes | On a 201, the balance after this debit. |
+| `expiresAt` | `String` | Yes | Five years from issue. |
 | `idempotencyKey` | `String` | Yes | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` | `Boolean` | Yes |  |
 | `message` | `String` | No | Short personal note shown with the gift. |
+| `mode` | `String` | Yes | Derived from the API key prefix. |
 | `product` | `String` | Yes | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` | `Hash` | No |  |
-| `reference` | `String` | No | Your identifier. |
+| `redeemLink` | `String` | Yes | The only field you need to keep. |
+| `reference` | `String` | Yes | Always present. |
 | `senderName` | `String` | No | Who the gift appears to be from, per call, so it can vary by course or cohort. |
-| `voucherToken` | `String` | No | Opaque voucher identifier. |
+| `voucherToken` | `String` | Yes | Opaque voucher identifier. |
+
+### Field Usage by Operation
+
+| Field | create |
+| --- | --- |
+| `amount` | - |
+| `balanceAfter` | - |
+| `expiresAt` | - |
+| `idempotencyKey` | - |
+| `idempotentReplay` | - |
+| `message` | - |
+| `mode` | - |
+| `product` | - |
+| `recipient` | - |
+| `redeemLink` | - |
+| `reference` | Yes |
+| `senderName` | - |
+| `voucherToken` | - |
 
 ### Operations
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.Voucher.create({
+  "amount" => 1, # Float
+  "balanceAfter" => 1, # Float
+  "expiresAt" => "example_expiresAt", # String
   "idempotencyKey" => "example_idempotencyKey", # String
+  "idempotentReplay" => true, # Boolean
+  "mode" => "example_mode", # String
   "product" => "example_product", # String
+  "redeemLink" => "example_redeemLink", # String
+  "reference" => "example_reference", # String
+  "voucherToken" => "example_voucherToken", # String
 })
 ```
 
@@ -494,6 +526,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

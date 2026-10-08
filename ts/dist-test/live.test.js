@@ -5,7 +5,11 @@ const __1 = require("..");
 const live_scenarios_1 = require("./live-scenarios");
 const utility_1 = require("./utility");
 (0, utility_1.loadEnvLocal)(__dirname + '/../.env.local');
-(0, node_test_1.test)('live operation coverage', { skip: process.env.BRONTIE_TEST_LIVE !== 'TRUE' }, async () => {
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+(0, node_test_1.test)('live operation coverage', { skip: process.env.BRONTIE_TEST_LIVE !== 'TRUE' }, async (t) => {
     await (0, live_scenarios_1.runLiveScenarios)(__1.SDK, [
         {
             "entity": "balance",
@@ -50,26 +54,26 @@ const utility_1 = require("./utility");
                                     ],
                                     "properties": {
                                         "balance": {
-                                            "key$": "balance",
-                                            "type": "number"
+                                            "type": "number",
+                                            "key$": "balance"
                                         },
                                         "currency": {
+                                            "type": "string",
                                             "const": "EUR",
-                                            "key$": "currency",
-                                            "type": "string"
+                                            "key$": "currency"
                                         },
                                         "alertPercent": {
+                                            "type": "number",
                                             "description": "Percentage of the most recent top-up at which the low-balance\nthreshold sits. Always present; defaults to 20.\n",
-                                            "key$": "alertPercent",
-                                            "type": "number"
+                                            "key$": "alertPercent"
                                         },
                                         "alertAt": {
-                                            "description": "The threshold resolved to a euro figure: `lastTopUp × alertPercent`.\n`null` until the first top-up has been made, because before then\nthere is nothing for the percentage to be a percentage of.\n",
-                                            "key$": "alertAt",
                                             "type": [
                                                 "number",
                                                 "null"
-                                            ]
+                                            ],
+                                            "description": "The threshold resolved to a euro figure: `lastTopUp × alertPercent`.\n`null` until the first top-up has been made, because before then\nthere is nothing for the percentage to be a percentage of.\n",
+                                            "key$": "alertAt"
                                         }
                                     },
                                     "x-ref": "#/components/schemas/Balance",
@@ -306,12 +310,14 @@ const utility_1 = require("./utility");
                                             "properties": {
                                                 "voucherToken": {
                                                     "type": "string",
-                                                    "description": "Opaque voucher identifier. Test-mode tokens begin with `test_`.\n"
+                                                    "description": "Opaque voucher identifier. Test-mode tokens begin with `test_`.\n",
+                                                    "key$": "voucherToken"
                                                 },
                                                 "redeemLink": {
                                                     "type": "string",
                                                     "format": "uri",
-                                                    "description": "The only field you need to keep. Surface this to the recipient.\nLive links are under `/brontie-coffee/`; test links are under\n`/api-sandbox/voucher/` and open a page stating the voucher cannot\nbe redeemed.\n"
+                                                    "description": "The only field you need to keep. Surface this to the recipient.\nLive links are under `/brontie-coffee/`; test links are under\n`/api-sandbox/voucher/` and open a page stating the voucher cannot\nbe redeemed.\n",
+                                                    "key$": "redeemLink"
                                                 },
                                                 "product": {
                                                     "type": "string",
@@ -320,24 +326,29 @@ const utility_1 = require("./utility");
                                                         "coffee_and_cake"
                                                     ],
                                                     "description": "`coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. Prices are fixed\nper product, not negotiated per partner.\n",
-                                                    "x-ref": "#/components/schemas/Product"
+                                                    "x-ref": "#/components/schemas/Product",
+                                                    "key$": "product"
                                                 },
                                                 "amount": {
                                                     "type": "number",
-                                                    "description": "Amount in EUR debited from the balance."
+                                                    "description": "Amount in EUR debited from the balance.",
+                                                    "key$": "amount"
                                                 },
                                                 "expiresAt": {
                                                     "type": "string",
                                                     "format": "date-time",
-                                                    "description": "Five years from issue."
+                                                    "description": "Five years from issue.",
+                                                    "key$": "expiresAt"
                                                 },
                                                 "balanceAfter": {
                                                     "type": "number",
-                                                    "description": "On a 201, the balance after this debit. For test keys nothing is\ndebited, so this is the untouched balance. On a 200 replay, see the\nnote on that response.\n"
+                                                    "description": "On a 201, the balance after this debit. For test keys nothing is\ndebited, so this is the untouched balance. On a 200 replay, see the\nnote on that response.\n",
+                                                    "key$": "balanceAfter"
                                                 },
                                                 "reference": {
                                                     "type": "string",
-                                                    "description": "Always present. Your `reference` echoed back unchanged, or an empty\nstring if you did not supply one.\n"
+                                                    "description": "Always present. Your `reference` echoed back unchanged, or an empty\nstring if you did not supply one.\n",
+                                                    "key$": "reference"
                                                 },
                                                 "mode": {
                                                     "type": "string",
@@ -346,7 +357,8 @@ const utility_1 = require("./utility");
                                                         "test"
                                                     ],
                                                     "description": "Derived from the API key prefix. A `test` voucher is not redeemable and\nits link opens a page stating so.\n",
-                                                    "x-ref": "#/components/schemas/Mode"
+                                                    "x-ref": "#/components/schemas/Mode",
+                                                    "key$": "mode"
                                                 }
                                             },
                                             "x-ref": "#/components/schemas/Voucher"
@@ -359,7 +371,8 @@ const utility_1 = require("./utility");
                                             "properties": {
                                                 "idempotentReplay": {
                                                     "type": "boolean",
-                                                    "const": true
+                                                    "const": true,
+                                                    "key$": "idempotentReplay"
                                                 }
                                             }
                                         }
@@ -403,12 +416,14 @@ const utility_1 = require("./utility");
                                     "properties": {
                                         "voucherToken": {
                                             "type": "string",
-                                            "description": "Opaque voucher identifier. Test-mode tokens begin with `test_`.\n"
+                                            "description": "Opaque voucher identifier. Test-mode tokens begin with `test_`.\n",
+                                            "key$": "voucherToken"
                                         },
                                         "redeemLink": {
                                             "type": "string",
                                             "format": "uri",
-                                            "description": "The only field you need to keep. Surface this to the recipient.\nLive links are under `/brontie-coffee/`; test links are under\n`/api-sandbox/voucher/` and open a page stating the voucher cannot\nbe redeemed.\n"
+                                            "description": "The only field you need to keep. Surface this to the recipient.\nLive links are under `/brontie-coffee/`; test links are under\n`/api-sandbox/voucher/` and open a page stating the voucher cannot\nbe redeemed.\n",
+                                            "key$": "redeemLink"
                                         },
                                         "product": {
                                             "type": "string",
@@ -417,24 +432,29 @@ const utility_1 = require("./utility");
                                                 "coffee_and_cake"
                                             ],
                                             "description": "`coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. Prices are fixed\nper product, not negotiated per partner.\n",
-                                            "x-ref": "#/components/schemas/Product"
+                                            "x-ref": "#/components/schemas/Product",
+                                            "key$": "product"
                                         },
                                         "amount": {
                                             "type": "number",
-                                            "description": "Amount in EUR debited from the balance."
+                                            "description": "Amount in EUR debited from the balance.",
+                                            "key$": "amount"
                                         },
                                         "expiresAt": {
                                             "type": "string",
                                             "format": "date-time",
-                                            "description": "Five years from issue."
+                                            "description": "Five years from issue.",
+                                            "key$": "expiresAt"
                                         },
                                         "balanceAfter": {
                                             "type": "number",
-                                            "description": "On a 201, the balance after this debit. For test keys nothing is\ndebited, so this is the untouched balance. On a 200 replay, see the\nnote on that response.\n"
+                                            "description": "On a 201, the balance after this debit. For test keys nothing is\ndebited, so this is the untouched balance. On a 200 replay, see the\nnote on that response.\n",
+                                            "key$": "balanceAfter"
                                         },
                                         "reference": {
                                             "type": "string",
-                                            "description": "Always present. Your `reference` echoed back unchanged, or an empty\nstring if you did not supply one.\n"
+                                            "description": "Always present. Your `reference` echoed back unchanged, or an empty\nstring if you did not supply one.\n",
+                                            "key$": "reference"
                                         },
                                         "mode": {
                                             "type": "string",
@@ -443,7 +463,8 @@ const utility_1 = require("./utility");
                                                 "test"
                                             ],
                                             "description": "Derived from the API key prefix. A `test` voucher is not redeemable and\nits link opens a page stating so.\n",
-                                            "x-ref": "#/components/schemas/Mode"
+                                            "x-ref": "#/components/schemas/Mode",
+                                            "key$": "mode"
                                         }
                                     },
                                     "x-ref": "#/components/schemas/Voucher"
@@ -876,6 +897,6 @@ const utility_1 = require("./utility");
             },
             "reachable": true
         }
-    ], 'BRONTIE', { server: {}, secret: process.env.BRONTIE_SECRET });
+    ], 'BRONTIE', { server: {}, secret: process.env.BRONTIE_SECRET }, { strict: true, t });
 });
 //# sourceMappingURL=live.test.js.map

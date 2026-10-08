@@ -166,6 +166,7 @@ def make_config():
         },
         "optspec": {
           "clearTimer": "`$FUNCTION`",
+          "now": "`$FUNCTION`",
           "setTimer": "`$FUNCTION`",
         },
         "strict": False,
@@ -264,6 +265,10 @@ def make_config():
                   "id": "balance",
                   "retention": "Read-only; creates nothing.",
                 },
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -275,6 +280,28 @@ def make_config():
       "voucher": {
         "fields": [
           {
+            "name": "amount",
+            "title": "Amount",
+            "type": "`$NUMBER`",
+            "req": True,
+            "short": "Amount in EUR debited from the balance.",
+          },
+          {
+            "name": "balanceAfter",
+            "title": "Balance After",
+            "type": "`$NUMBER`",
+            "req": True,
+            "short": "On a 201, the balance after this debit.",
+          },
+          {
+            "name": "expiresAt",
+            "title": "Expires At",
+            "type": "`$STRING`",
+            "req": True,
+            "short": "Five years from issue.",
+            "format": "date-time",
+          },
+          {
             "name": "idempotencyKey",
             "title": "Idempotency Key",
             "type": "`$STRING`",
@@ -282,10 +309,23 @@ def make_config():
             "short": "Unique per gift on the partner side, scoped per partner and per mode.",
           },
           {
+            "name": "idempotentReplay",
+            "title": "Idempotent Replay",
+            "type": "`$BOOLEAN`",
+            "req": True,
+          },
+          {
             "name": "message",
             "title": "Message",
             "type": "`$STRING`",
             "short": "Short personal note shown with the gift.",
+          },
+          {
+            "name": "mode",
+            "title": "Mode",
+            "type": "`$STRING`",
+            "req": True,
+            "short": "Derived from the API key prefix.",
           },
           {
             "name": "product",
@@ -300,10 +340,24 @@ def make_config():
             "type": "`$OBJECT`",
           },
           {
+            "name": "redeemLink",
+            "title": "Redeem Link",
+            "type": "`$STRING`",
+            "req": True,
+            "short": "The only field you need to keep.",
+            "format": "uri",
+          },
+          {
             "name": "reference",
             "title": "Reference",
             "type": "`$STRING`",
-            "short": "Your identifier.",
+            "req": True,
+            "op": {
+              "create": {
+                "type": "`$STRING`",
+              },
+            },
+            "short": "Always present.",
           },
           {
             "name": "senderName",
@@ -315,6 +369,7 @@ def make_config():
             "name": "voucherToken",
             "title": "Voucher Token",
             "type": "`$STRING`",
+            "req": True,
             "short": "Opaque voucher identifier.",
             "readOnly": True,
           },
@@ -360,6 +415,10 @@ def make_config():
                   "auth": "account",
                   "excluded": "Issues a permanent voucher; no delete or refund path exists",
                   "id": "voucher-create",
+                },
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
                 },
               },
             ],

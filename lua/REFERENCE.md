@@ -104,7 +104,7 @@ local balance = client:Balance(nil)
 
 #### `load(reqmatch, ctrl) -> any, err`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Balance():load()
@@ -150,24 +150,56 @@ local voucher = client:Voucher(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `amount` | `number` | Yes | Amount in EUR debited from the balance. |
+| `balanceAfter` | `number` | Yes | On a 201, the balance after this debit. |
+| `expiresAt` | `string` | Yes | Five years from issue. |
 | `idempotencyKey` | `string` | Yes | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` | `boolean` | Yes |  |
 | `message` | `string` | No | Short personal note shown with the gift. |
+| `mode` | `string` | Yes | Derived from the API key prefix. |
 | `product` | `string` | Yes | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` | `table` | No |  |
-| `reference` | `string` | No | Your identifier. |
+| `redeemLink` | `string` | Yes | The only field you need to keep. |
+| `reference` | `string` | Yes | Always present. |
 | `senderName` | `string` | No | Who the gift appears to be from, per call, so it can vary by course or cohort. |
-| `voucherToken` | `string` | No | Opaque voucher identifier. |
+| `voucherToken` | `string` | Yes | Opaque voucher identifier. |
+
+### Field Usage by Operation
+
+| Field | create |
+| --- | --- |
+| `amount` | - |
+| `balanceAfter` | - |
+| `expiresAt` | - |
+| `idempotencyKey` | - |
+| `idempotentReplay` | - |
+| `message` | - |
+| `mode` | - |
+| `product` | - |
+| `recipient` | - |
+| `redeemLink` | - |
+| `reference` | Yes |
+| `senderName` | - |
+| `voucherToken` | - |
 
 ### Operations
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Voucher():create({
+  amount = --[[ number ]],
+  balanceAfter = --[[ number ]],
+  expiresAt = --[[ string ]],
   idempotencyKey = --[[ string ]],
+  idempotentReplay = --[[ boolean ]],
+  mode = --[[ string ]],
   product = --[[ string ]],
+  redeemLink = --[[ string ]],
+  reference = --[[ string ]],
+  voucherToken = --[[ string ]],
 })
 ```
 
@@ -491,6 +523,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

@@ -165,6 +165,7 @@ class Config {
             },
             "optspec": {
                 "clearTimer": "`$FUNCTION`",
+                "now": "`$FUNCTION`",
                 "setTimer": "`$FUNCTION`"
             },
             "strict": false,
@@ -262,6 +263,10 @@ class Config {
                                 "auth": "account",
                                 "id": "balance",
                                 "retention": "Read-only; creates nothing."
+                            },
+                            "response": {
+                                "kind": "json",
+                                "media": "application/json"
                             }
                         }
                     ]
@@ -274,6 +279,28 @@ class Config {
         "voucher": {
             "fields": [
                 {
+                    "name": "amount",
+                    "title": "Amount",
+                    "type": "`$NUMBER`",
+                    "req": true,
+                    "short": "Amount in EUR debited from the balance."
+                },
+                {
+                    "name": "balanceAfter",
+                    "title": "Balance After",
+                    "type": "`$NUMBER`",
+                    "req": true,
+                    "short": "On a 201, the balance after this debit."
+                },
+                {
+                    "name": "expiresAt",
+                    "title": "Expires At",
+                    "type": "`$STRING`",
+                    "req": true,
+                    "short": "Five years from issue.",
+                    "format": "date-time"
+                },
+                {
                     "name": "idempotencyKey",
                     "title": "Idempotency Key",
                     "type": "`$STRING`",
@@ -281,10 +308,23 @@ class Config {
                     "short": "Unique per gift on the partner side, scoped per partner and per mode."
                 },
                 {
+                    "name": "idempotentReplay",
+                    "title": "Idempotent Replay",
+                    "type": "`$BOOLEAN`",
+                    "req": true
+                },
+                {
                     "name": "message",
                     "title": "Message",
                     "type": "`$STRING`",
                     "short": "Short personal note shown with the gift."
+                },
+                {
+                    "name": "mode",
+                    "title": "Mode",
+                    "type": "`$STRING`",
+                    "req": true,
+                    "short": "Derived from the API key prefix."
                 },
                 {
                     "name": "product",
@@ -299,10 +339,24 @@ class Config {
                     "type": "`$OBJECT`"
                 },
                 {
+                    "name": "redeemLink",
+                    "title": "Redeem Link",
+                    "type": "`$STRING`",
+                    "req": true,
+                    "short": "The only field you need to keep.",
+                    "format": "uri"
+                },
+                {
                     "name": "reference",
                     "title": "Reference",
                     "type": "`$STRING`",
-                    "short": "Your identifier."
+                    "req": true,
+                    "op": {
+                        "create": {
+                            "type": "`$STRING`"
+                        }
+                    },
+                    "short": "Always present."
                 },
                 {
                     "name": "senderName",
@@ -314,6 +368,7 @@ class Config {
                     "name": "voucherToken",
                     "title": "Voucher Token",
                     "type": "`$STRING`",
+                    "req": true,
                     "short": "Opaque voucher identifier.",
                     "readOnly": true
                 }
@@ -359,6 +414,10 @@ class Config {
                                 "auth": "account",
                                 "excluded": "Issues a permanent voucher; no delete or refund path exists",
                                 "id": "voucher-create"
+                            },
+                            "response": {
+                                "kind": "json",
+                                "media": "application/json"
                             }
                         }
                     ]

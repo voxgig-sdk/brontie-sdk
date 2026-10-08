@@ -195,6 +195,10 @@
                   "o": "/api/v1/balance",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "api"
@@ -224,6 +228,31 @@
             "field": {}
           },
           "fields": {
+            "amount": {
+              "a": true,
+              "h": "Amount",
+              "n": "amount",
+              "r": true,
+              "sh": "Amount in EUR debited from the balance.",
+              "t": "`$NUMBER`"
+            },
+            "balanceAfter": {
+              "a": true,
+              "h": "Balance After",
+              "n": "balanceAfter",
+              "r": true,
+              "sh": "On a 201, the balance after this debit.",
+              "t": "`$NUMBER`"
+            },
+            "expiresAt": {
+              "a": true,
+              "fo": "date-time",
+              "h": "Expires At",
+              "n": "expiresAt",
+              "r": true,
+              "sh": "Five years from issue.",
+              "t": "`$STRING`"
+            },
             "idempotencyKey": {
               "a": true,
               "h": "Idempotency Key",
@@ -232,12 +261,27 @@
               "sh": "Unique per gift on the partner side, scoped per partner and per mode.",
               "t": "`$STRING`"
             },
+            "idempotentReplay": {
+              "a": true,
+              "h": "Idempotent Replay",
+              "n": "idempotentReplay",
+              "r": true,
+              "t": "`$BOOLEAN`"
+            },
             "message": {
               "a": true,
               "h": "Message",
               "n": "message",
               "r": false,
               "sh": "Short personal note shown with the gift.",
+              "t": "`$STRING`"
+            },
+            "mode": {
+              "a": true,
+              "h": "Mode",
+              "n": "mode",
+              "r": true,
+              "sh": "Derived from the API key prefix.",
               "t": "`$STRING`"
             },
             "product": {
@@ -255,12 +299,27 @@
               "r": false,
               "t": "`$OBJECT`"
             },
+            "redeemLink": {
+              "a": true,
+              "fo": "uri",
+              "h": "Redeem Link",
+              "n": "redeemLink",
+              "r": true,
+              "sh": "The only field you need to keep.",
+              "t": "`$STRING`"
+            },
             "reference": {
               "a": true,
               "h": "Reference",
               "n": "reference",
-              "r": false,
-              "sh": "Your identifier.",
+              "op": {
+                "create": {
+                  "req": false,
+                  "type": "`$STRING`"
+                }
+              },
+              "r": true,
+              "sh": "Always present.",
               "t": "`$STRING`"
             },
             "senderName": {
@@ -275,7 +334,7 @@
               "a": true,
               "h": "Voucher Token",
               "n": "voucherToken",
-              "r": false,
+              "r": true,
               "ro": true,
               "sh": "Opaque voucher identifier.",
               "t": "`$STRING`"
@@ -293,6 +352,14 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "idempotencyKey",
+                    "message",
+                    "product",
+                    "recipient",
+                    "reference",
+                    "senderName"
+                  ],
                   "co": {
                     "id": "POST /api/v1/vouchers",
                     "source": "openapi3",
@@ -309,6 +376,10 @@
                   "o": "/api/v1/vouchers",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "api"
@@ -1085,6 +1156,7 @@
             },
             "optspec": {
               "clearTimer": "`$FUNCTION`",
+              "now": "`$FUNCTION`",
               "setTimer": "`$FUNCTION`"
             },
             "strict": false
@@ -1255,7 +1327,7 @@
       "optspec": {
         "allow": {
           "method": "GET,PUT,POST,PATCH,DELETE,OPTIONS",
-          "op": "create,update,load,list,remove,command,direct,graphql"
+          "op": "create,update,patch,load,list,remove,command,direct,graphql"
         },
         "apikey": "",
         "auth": {
@@ -1266,7 +1338,12 @@
         },
         "base": "http://localhost:8000",
         "clean": {
-          "keys": "key,token,id"
+          "active": true,
+          "hint": "0",
+          "keys": "key,secret,token,password,passwd,authorization,cookie,credential,signature",
+          "mask": "[redacted]",
+          "min": "4",
+          "values": ""
         },
         "entity": {
           "`$CHILD`": {
@@ -1303,6 +1380,11 @@
         "top": {
           "active": true
         }
+      },
+      "publisher": {
+        "name": "",
+        "security": "",
+        "url": ""
       },
       "repo": {
         "host": "github.com",
@@ -1533,7 +1615,10 @@
             "version": "0.0.3"
           },
           "superseded": [],
-          "title": "Go MCP server"
+          "title": "Go MCP server",
+          "tool": {
+            "write": false
+          }
         },
         "lua": {
           "active": true,
@@ -1910,6 +1995,17 @@
           "base": "",
           "strict": true
         }
+      },
+      "text": {
+        "about_md": "",
+        "docs_url": "",
+        "entity_desc": {},
+        "homepage": "",
+        "meta_source": "",
+        "summary": "",
+        "tagline": "",
+        "title": "",
+        "website": ""
       }
     }
   },

@@ -15,7 +15,7 @@ keeps the cognitive load low.
 
 ## Install
 This package is not yet published to PyPI. Install it from the GitHub
-release tag (`py/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/brontie-sdk/releases)) or
+release tag (`py/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/brontie-sdk/tags)) or
 from a source checkout:
 
 ```bash
@@ -46,7 +46,7 @@ client = BrontieSDK({
 ```python
 try:
     balance = client.Balance().load()
-    print(balance)
+    print(balance.data_get())
 except Exception as err:
     print(f"load failed: {err}")
 ```
@@ -59,7 +59,7 @@ Entity operations raise on failure, so wrap them in `try` / `except`:
 ```python
 try:
     balance = client.Balance().load()
-    print(balance)
+    print(balance.data_get())
 except Exception as err:
     print(f"load failed: {err}")
 ```
@@ -125,10 +125,9 @@ Create a mock client for unit testing — no server required:
 ```python
 client = BrontieSDK.test()
 
-# Entity ops return the ENTITY and raises on error;
-# call data_get() for the record.
+# Entity ops return the entity, and list one per record; they raise on error.
 balance = client.Balance().load()
-# balance contains the mock response record
+# data_get() on an entity reads its mock response record
 ```
 
 ### Use a custom fetch function
@@ -215,8 +214,8 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria. Raises on error. |
-| `create` | `(reqdata, ctrl) -> any` | Create a new entity. Raises on error. |
+| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria, and return it. Raises on error. |
+| `create` | `(reqdata, ctrl) -> any` | Create a new entity, and return it. Raises on error. |
 | `data_get` | `() -> dict` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> dict` | Get entity match criteria. |
@@ -226,9 +225,9 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the ENTITY (call data_get() for the record) (a `dict` for single-entity
-ops, a `list` for `list`) and raise on error. Wrap calls in
-`try`/`except` to handle failures.
+Entity operations return the entity, and `list` a `list` of entities, one
+per record; an entity's `data_get()` reads its record (a `dict`). They raise
+on error, so wrap calls in `try`/`except` to handle failures.
 
 The `direct()` escape hatch never raises — it returns a result `dict`
 you branch on via `result["ok"]`:
@@ -261,11 +260,17 @@ API path: `/api/v1/balance`
 
 | Field | Description |
 | --- | --- |
+| `amount` | Amount in EUR debited from the balance. |
+| `balanceAfter` | On a 201, the balance after this debit. |
+| `expiresAt` | Five years from issue. |
 | `idempotencyKey` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` |  |
 | `message` | Short personal note shown with the gift. |
+| `mode` | Derived from the API key prefix. |
 | `product` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` |  |
-| `reference` | Your identifier. |
+| `redeemLink` | The only field you need to keep. |
+| `reference` | Always present. |
 | `senderName` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | Opaque voucher identifier. |
 
@@ -318,11 +323,17 @@ Create an instance: `voucher = client.Voucher()`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `amount` | `float` | Amount in EUR debited from the balance. |
+| `balanceAfter` | `float` | On a 201, the balance after this debit. |
+| `expiresAt` | `str` | Five years from issue. |
 | `idempotencyKey` | `str` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` | `bool` |  |
 | `message` | `str` | Short personal note shown with the gift. |
+| `mode` | `str` | Derived from the API key prefix. |
 | `product` | `str` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` | `dict` |  |
-| `reference` | `str` | Your identifier. |
+| `redeemLink` | `str` | The only field you need to keep. |
+| `reference` | `str` | Always present. |
 | `senderName` | `str` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | `str` | Opaque voucher identifier. |
 
@@ -330,8 +341,16 @@ Create an instance: `voucher = client.Voucher()`
 
 ```python
 voucher = client.Voucher().create({
+    "amount": 1,  # float
+    "balanceAfter": 1,  # float
+    "expiresAt": "example_expiresAt",  # str
     "idempotencyKey": "example_idempotencyKey",  # str
+    "idempotentReplay": True,  # bool
+    "mode": "example_mode",  # str
     "product": "example_product",  # str
+    "redeemLink": "example_redeemLink",  # str
+    "reference": "example_reference",  # str
+    "voucherToken": "example_voucherToken",  # str
 })
 ```
 

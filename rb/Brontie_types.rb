@@ -52,11 +52,26 @@ BalanceLoadMatch = Struct.new(
 
 # Voucher entity data model.
 #
+# @!attribute [rw] amount
+#   @return [Float]
+#
+# @!attribute [rw] balanceAfter
+#   @return [Float]
+#
+# @!attribute [rw] expiresAt
+#   @return [String]
+#
 # @!attribute [rw] idempotencyKey
 #   @return [String]
 #
+# @!attribute [rw] idempotentReplay
+#   @return [Boolean]
+#
 # @!attribute [rw] message
 #   @return [String, nil]
+#
+# @!attribute [rw] mode
+#   @return [String]
 #
 # @!attribute [rw] product
 #   @return [String]
@@ -64,19 +79,28 @@ BalanceLoadMatch = Struct.new(
 # @!attribute [rw] recipient
 #   @return [Hash, nil]
 #
+# @!attribute [rw] redeemLink
+#   @return [String]
+#
 # @!attribute [rw] reference
-#   @return [String, nil]
+#   @return [String]
 #
 # @!attribute [rw] senderName
 #   @return [String, nil]
 #
 # @!attribute [rw] voucherToken
-#   @return [String, nil]
+#   @return [String]
 Voucher = Struct.new(
+  :amount,
+  :balanceAfter,
+  :expiresAt,
   :idempotencyKey,
+  :idempotentReplay,
   :message,
+  :mode,
   :product,
   :recipient,
+  :redeemLink,
   :reference,
   :senderName,
   :voucherToken,
@@ -85,11 +109,26 @@ Voucher = Struct.new(
 
 # Request payload for Voucher#create.
 #
+# @!attribute [rw] amount
+#   @return [Float]
+#
+# @!attribute [rw] balanceAfter
+#   @return [Float]
+#
+# @!attribute [rw] expiresAt
+#   @return [String]
+#
 # @!attribute [rw] idempotencyKey
 #   @return [String]
 #
+# @!attribute [rw] idempotentReplay
+#   @return [Boolean]
+#
 # @!attribute [rw] message
 #   @return [String, nil]
+#
+# @!attribute [rw] mode
+#   @return [String]
 #
 # @!attribute [rw] product
 #   @return [String]
@@ -97,19 +136,28 @@ Voucher = Struct.new(
 # @!attribute [rw] recipient
 #   @return [Hash, nil]
 #
+# @!attribute [rw] redeemLink
+#   @return [String]
+#
 # @!attribute [rw] reference
-#   @return [String, nil]
+#   @return [String]
 #
 # @!attribute [rw] senderName
 #   @return [String, nil]
 #
 # @!attribute [rw] voucherToken
-#   @return [String, nil]
+#   @return [String]
 VoucherCreateData = Struct.new(
+  :amount,
+  :balanceAfter,
+  :expiresAt,
   :idempotencyKey,
+  :idempotentReplay,
   :message,
+  :mode,
   :product,
   :recipient,
+  :redeemLink,
   :reference,
   :senderName,
   :voucherToken,

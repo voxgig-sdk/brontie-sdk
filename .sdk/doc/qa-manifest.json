@@ -27,5 +27,46 @@
     "docs/tools/go-mcp.html"
   ],
   "config": ".sdk/doc/qa/vale.ini",
-  "routes": {}
+  "routes": {},
+  "quoted": {
+    "SUMMARY.md": [
+      "> Partners call this API to issue a Brontie voucher. Brontie returns a\n> redemption link. The partner surfaces that link inside their own product. Brontie does\n> not contact the recipient: no email, no SMS.\n>\n> The recipient chooses a partner cafe themselves after receiving the link,\n> not at issue time, so no cafe is associated with a voucher until the\n> recipient picks one.\n>\n> Money comes off a balance topped up in advance. There is no refund path back\n> to the balance, including for vouchers that are never redeemed.\n>\n> Self-service top-up is still being built. Until it ships, balances are\n> credited by arrangement with Brontie.\n>\n> Scope: Republic of Ireland, EUR only.\n>\n> Read the Idempotency section before building. The `idempotencyKey` is\n> required and the retry behaviour around it is the only surprising part of\n> this API.",
+      "API key as a bearer token. The key prefix determines the mode: `brontie_test_` for sandbox, `brontie_live_` for production. A key is shown once and cannot be recovered.",
+      "Amount in EUR debited from the balance.",
+      "Current balance",
+      "Five years from issue.",
+      "Idempotent replay. The original voucher for this key, not charged again. # VERIFIED: balanceAfter on a replay is the balance NOW, not the # balance after the original debit. Note that `balanceAfter` in a replay is your balance at the time of the replay, not the balance recorded when the voucher was first issued. If other vouchers have been issued since, it will differ from the 201 you originally received.",
+      "On a 201, the balance after this debit. For test keys nothing is debited, so this is the untouched balance. On a 200 replay, see the note on that response.",
+      "Percentage of the most recent top-up at which the low-balance threshold sits. Always present; defaults to 20.",
+      "Production. Key prefix determines live or test mode.",
+      "Short personal note shown with the gift.",
+      "The threshold resolved to a euro figure: `lastTopUp × alertPercent`. `null` until the first top-up has been made, because before then there is nothing for the percentage to be a percentage of.",
+      "Unique per gift on the partner side, scoped per partner and per mode.",
+      "Voucher issued and balance debited"
+    ],
+    "docs/api/balance.html": [
+      "Current balance",
+      "Key missing, malformed, revoked or unknown, or a key whose prefix does not match the mode it was issued in.",
+      "Rate limited. Honour `Retry-After`. Limits are per key with separate counters for test and live, so a test key cannot exhaust a live budget. Default 120 requests per minute, burst 20 per second, adjustable per partner without a deploy.",
+      "The key is valid but the call is not permitted: either the key lacks the scope for this endpoint (`vouchers:create` or `balance:read`), or the partner account has been deactivated."
+    ],
+    "docs/api/index.html": [
+      "Issue coffee vouchers against a pre-funded balance.",
+      "Production. Key prefix determines live or test mode."
+    ],
+    "docs/api/voucher.html": [
+      "Idempotent replay. The original voucher for this key, not charged again. # VERIFIED: balanceAfter on a replay is the balance NOW, not the # balance after the original debit. Note that `balanceAfter` in a replay is your balance at the time of the replay, not the balance recorded when the voucher was first issued. If other vouchers have been issued since, it will differ from the 201 you originally received.",
+      "Insufficient balance. Nothing issued, nothing charged. Live mode only: this response cannot occur for a test key.",
+      "Internal error. Always this exact shape,  `&#123; error, code &#125;` , even for a fault deep inside the request. A top-level guard on this route (added after the rest of this spec was first verified) catches anything that would otherwise have escaped as a bare platform error with no `code` to branch on. For the ordinary case, something failed before any state was touched, or during the mint step itself, any partial work is rolled back before responding: a debit is refunded and the claim released, so retrying with the same key is safe and will succeed. One case is narrower: if the fault happens while this route is already handling an abandoned claim from an earlier attempt (see `issue_stuck` above), nothing is rolled back on purpose, a debit from that earlier attempt may or may not have gone through, and guessing wrong would either double-charge or lose track of a voucher. &quot;Safe to retry&quot; still holds in the sense that matters: the same key can never mint twice. It does not guarantee the retry succeeds, in this specific case it will most likely come back as `409 issue_stuck` rather than a fresh `201`, which is the correct outcome, not a bug to work around.",
+      "Key missing, malformed, revoked or unknown, or a key whose prefix does not match the mode it was issued in.",
+      "Malformed body or validation failed. Four codes, one per cause.",
+      "Rate limited. Honour `Retry-After`. Limits are per key with separate counters for test and live, so a test key cannot exhaust a live budget. Default 120 requests per minute, burst 20 per second, adjustable per partner without a deploy.",
+      "The key is valid but the call is not permitted: either the key lacks the scope for this endpoint (`vouchers:create` or `balance:read`), or the partner account has been deactivated.",
+      "Two distinct cases, separated by `code`. Branch on the code, not on the status. `issue_in_progress`: a request with this key is genuinely in flight. Retry with backoff and you will receive the original voucher. Occurs in both modes. `issue_stuck`: a claim for this key has been pending for more than five minutes, meaning an earlier attempt died mid-issue. In live mode this is not resolved automatically, because money may already have moved and only a human can reconcile it safely. Brontie is alerted when this happens; contact Brontie rather than retrying in a loop, and do not reuse the key. In test mode a stuck claim self-heals after five minutes and the retry succeeds, so `issue_stuck` is not reproducible with a test key.",
+      "Voucher issued and balance debited"
+    ],
+    "docs/index.html": [
+      "> Partners call this API to issue a Brontie voucher. Brontie returns a\n> redemption link. The partner surfaces that link inside their own product. Brontie does\n> not contact the recipient: no email, no SMS.\n>\n> The recipient chooses a partner cafe themselves after receiving the link,\n> not at issue time, so no cafe is associated with a voucher until the\n> recipient picks one.\n>\n> Money comes off a balance topped up in advance. There is no refund path back\n> to the balance, including for vouchers that are never redeemed.\n>\n> Self-service top-up is still being built. Until it ships, balances are\n> credited by arrangement with Brontie.\n>\n> Scope: Republic of Ireland, EUR only.\n>\n> Read the Idempotency section before building. The `idempotencyKey` is\n> required and the retry behaviour around it is the only surprising part of\n> this API."
+    ]
+  }
 }

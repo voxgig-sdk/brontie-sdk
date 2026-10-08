@@ -31,26 +31,38 @@ class BalanceLoadMatch(TypedDict, total=False):
 
 
 class VoucherRequired(TypedDict):
+    amount: float
+    balanceAfter: float
+    expiresAt: str
     idempotencyKey: str
+    idempotentReplay: bool
+    mode: str
     product: str
+    redeemLink: str
+    reference: str
+    voucherToken: str
 
 
 class Voucher(VoucherRequired, total=False):
     message: str
     recipient: dict
-    reference: str
     senderName: str
-    voucherToken: str
 
 
 class VoucherCreateDataRequired(TypedDict):
+    amount: float
+    balanceAfter: float
+    expiresAt: str
     idempotencyKey: str
+    idempotentReplay: bool
+    mode: str
     product: str
+    redeemLink: str
+    reference: str
+    voucherToken: str
 
 
 class VoucherCreateData(VoucherCreateDataRequired, total=False):
     message: str
     recipient: dict
-    reference: str
     senderName: str
-    voucherToken: str

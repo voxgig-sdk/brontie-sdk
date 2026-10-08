@@ -19,22 +19,34 @@
 ---@field currency? string
 
 ---@class Voucher
+---@field amount number
+---@field balanceAfter number
+---@field expiresAt string
 ---@field idempotencyKey string
+---@field idempotentReplay boolean
 ---@field message? string
+---@field mode string
 ---@field product string
 ---@field recipient? table
----@field reference? string
+---@field redeemLink string
+---@field reference string
 ---@field senderName? string
----@field voucherToken? string
+---@field voucherToken string
 
 ---@class VoucherCreateData
+---@field amount number
+---@field balanceAfter number
+---@field expiresAt string
 ---@field idempotencyKey string
+---@field idempotentReplay boolean
 ---@field message? string
+---@field mode string
 ---@field product string
 ---@field recipient? table
----@field reference? string
+---@field redeemLink string
+---@field reference string
 ---@field senderName? string
----@field voucherToken? string
+---@field voucherToken string
 
 local M = {}
 

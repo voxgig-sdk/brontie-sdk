@@ -20,22 +20,34 @@ export interface BalanceLoadMatch {
 }
 
 export interface Voucher {
+  amount: number
+  balanceAfter: number
+  expiresAt: string
   idempotencyKey: string
+  idempotentReplay: boolean
   message?: string
+  mode: string
   product: string
   recipient?: Record<string, any>
-  reference?: string
+  redeemLink: string
+  reference: string
   senderName?: string
-  voucherToken?: string
+  voucherToken: string
 }
 
 export interface VoucherCreateData {
+  amount: number
+  balanceAfter: number
+  expiresAt: string
   idempotencyKey: string
+  idempotentReplay: boolean
   message?: string
+  mode: string
   product: string
   recipient?: Record<string, any>
-  reference?: string
+  redeemLink: string
+  reference: string
   senderName?: string
-  voucherToken?: string
+  voucherToken: string
 }
 

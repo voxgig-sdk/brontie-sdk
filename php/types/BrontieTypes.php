@@ -33,24 +33,36 @@ class BalanceLoadMatch
 /** Voucher entity data model. */
 class Voucher
 {
+    public float $amount;
+    public float $balanceAfter;
+    public string $expiresAt;
     public string $idempotencyKey;
+    public bool $idempotentReplay;
     public ?string $message = null;
+    public string $mode;
     public string $product;
     public ?array $recipient = null;
-    public ?string $reference = null;
+    public string $redeemLink;
+    public string $reference;
     public ?string $senderName = null;
-    public ?string $voucherToken = null;
+    public string $voucherToken;
 }
 
 /** Request payload for Voucher#create. */
 class VoucherCreateData
 {
+    public float $amount;
+    public float $balanceAfter;
+    public string $expiresAt;
     public string $idempotencyKey;
+    public bool $idempotentReplay;
     public ?string $message = null;
+    public string $mode;
     public string $product;
     public ?array $recipient = null;
-    public ?string $reference = null;
+    public string $redeemLink;
+    public string $reference;
     public ?string $senderName = null;
-    public ?string $voucherToken = null;
+    public string $voucherToken;
 }
 

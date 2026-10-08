@@ -12,9 +12,18 @@ The SDK exposes the API as capitalised, semantic **Entities** — for example `c
 
 ## Install
 This package is not yet published to RubyGems. Install it from the
-GitHub release tag (`rb/vX.Y.Z`):
+GitHub release tag (`rb/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/brontie-sdk/tags)), or
+from a clone:
 
-- Releases: [https://github.com/voxgig-sdk/brontie-sdk/releases](https://github.com/voxgig-sdk/brontie-sdk/releases)
+```bash
+git clone https://github.com/voxgig-sdk/brontie-sdk
+```
+
+Then add it to your `Gemfile` by path, and run `bundle install`:
+
+```ruby
+gem "voxgig-sdk-brontie-sdk", path: "./brontie-sdk/rb"
+```
 
 
 ## Tutorial: your first API call
@@ -38,7 +47,7 @@ client = BrontieSDK.new({
 begin
   # load returns the ENTITY — call data_get for the Balance record (raises on error).
   balance = client.Balance.load()
-  puts balance
+  puts balance.data_get
 rescue => err
   warn "load failed: #{err}"
 end
@@ -120,9 +129,9 @@ Create a mock client for unit testing — no server required:
 client = BrontieSDK.test
 
 # Entity ops return the ENTITY (raises on error);
-# call data_get for the mock record.
+# data_get reads its mock record.
 balance = client.Balance.load()
-puts balance
+puts balance.data_get
 ```
 
 ### Use a custom fetch function
@@ -209,8 +218,8 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria. Raises on error. |
-| `create` | `(reqdata, ctrl) -> any` | Create a new entity. Raises on error. |
+| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria, and return it. Raises on error. |
+| `create` | `(reqdata, ctrl) -> any` | Create a new entity, and return it. Raises on error. |
 | `data_get` | `() -> Hash` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> Hash` | Get entity match criteria. |
@@ -220,9 +229,10 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the result data directly. On failure they
-raise a `BrontieError` (a `StandardError` subclass), so wrap
-calls in `begin`/`rescue` where you need to handle errors.
+Entity operations return the entity, and `list` an `Array` of entities, one
+per record; an entity's `data_get` reads its record. On failure they raise a
+`BrontieError` (a `StandardError` subclass), so wrap calls in
+`begin`/`rescue` where you need to handle errors.
 
 The `direct` escape hatch is the exception: it never raises and instead
 returns a result `Hash` with these keys:
@@ -254,11 +264,17 @@ API path: `/api/v1/balance`
 
 | Field | Description |
 | --- | --- |
+| `amount` | Amount in EUR debited from the balance. |
+| `balanceAfter` | On a 201, the balance after this debit. |
+| `expiresAt` | Five years from issue. |
 | `idempotencyKey` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` |  |
 | `message` | Short personal note shown with the gift. |
+| `mode` | Derived from the API key prefix. |
 | `product` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` |  |
-| `reference` | Your identifier. |
+| `redeemLink` | The only field you need to keep. |
+| `reference` | Always present. |
 | `senderName` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | Opaque voucher identifier. |
 
@@ -312,11 +328,17 @@ Create an instance: `voucher = client.Voucher`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `amount` | `Float` | Amount in EUR debited from the balance. |
+| `balanceAfter` | `Float` | On a 201, the balance after this debit. |
+| `expiresAt` | `String` | Five years from issue. |
 | `idempotencyKey` | `String` | Unique per gift on the partner side, scoped per partner and per mode. |
+| `idempotentReplay` | `Boolean` |  |
 | `message` | `String` | Short personal note shown with the gift. |
+| `mode` | `String` | Derived from the API key prefix. |
 | `product` | `String` | `coffee` is EUR 5.00, `coffee_and_cake` is EUR 10.00. |
 | `recipient` | `Hash` |  |
-| `reference` | `String` | Your identifier. |
+| `redeemLink` | `String` | The only field you need to keep. |
+| `reference` | `String` | Always present. |
 | `senderName` | `String` | Who the gift appears to be from, per call, so it can vary by course or cohort. |
 | `voucherToken` | `String` | Opaque voucher identifier. |
 
@@ -324,8 +346,16 @@ Create an instance: `voucher = client.Voucher`
 
 ```ruby
 voucher = client.Voucher.create({
+  "amount" => 1, # Float
+  "balanceAfter" => 1, # Float
+  "expiresAt" => "example_expiresAt", # String
   "idempotencyKey" => "example_idempotencyKey", # String
+  "idempotentReplay" => true, # Boolean
+  "mode" => "example_mode", # String
   "product" => "example_product", # String
+  "redeemLink" => "example_redeemLink", # String
+  "reference" => "example_reference", # String
+  "voucherToken" => "example_voucherToken", # String
 })
 ```
 

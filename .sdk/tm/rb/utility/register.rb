@@ -33,6 +33,8 @@ require_relative 'transform_response'
 
 BrontieUtility.registrar = ->(u) {
   u.clean = BrontieUtilities::Clean
+  u.clean_add = BrontieUtilities::CleanAdd
+  u.clean_explain = BrontieUtilities::CleanExplain
   u.done = BrontieUtilities::Done
   u.make_error = BrontieUtilities::MakeError
   u.feature_add = BrontieUtilities::FeatureAdd
