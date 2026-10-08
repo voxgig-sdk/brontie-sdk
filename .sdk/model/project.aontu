@@ -59,15 +59,15 @@ main: kit: target: php: publish: registry: package: 'voxgig-sdk/brontie-sdk'
 main: kit: target: ts: publish: version: '0.0.3'
 
 # A voucher is identified by the voucherToken its create response carries.
-# apidef takes the voucher's fields from the create request, which has none,
-# and names every entity's identity `id`, so the identity and its field are
-# declared here.
+# apidef names every entity's identity `id`, so the identity is declared here,
+# and the field is marked read-only: the server issues it. `r` is a default,
+# because apidef sets it from the create response where it reads one.
 main: kit: entity: voucher: {
   id: { field: 'voucherToken', name: 'voucherToken' }
   fields: voucherToken: {
     n: 'voucherToken'
     h: 'Voucher Token'
-    r: false
+    r: *false
     ro: true
     t: '`$STRING`'
     sh: 'Opaque voucher identifier.'
